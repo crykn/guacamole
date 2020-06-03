@@ -16,7 +16,6 @@
 package de.damios.guacamole.gdx;
 
 import java.util.Formatter;
-import java.util.concurrent.TimeUnit;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationLogger;
@@ -32,8 +31,6 @@ import text.formic.Stringf;
  * @author damios
  */
 public class Log {
-
-	public static final TimeUnit DEFAULT_TIME_UNIT = TimeUnit.MILLISECONDS;
 
 	private Log() {
 		throw new UnsupportedOperationException();
