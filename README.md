@@ -25,6 +25,7 @@ dependencies {
 
 ```
 dependencies {
+    // guacamole-core is included
     implementation 'com.github.crykn.guacamole:gdx:X.Y.Z'
 }
 ```
@@ -33,7 +34,7 @@ dependencies {
 
 ```
 dependencies {
-    implementation 'com.github.crykn.guacamole:gdx:X.Y.Z'
+    implementation project(":core")
     implementation 'com.github.crykn.guacamole:gdx-desktop:X.Y.Z'
 }
 ```
@@ -42,7 +43,9 @@ dependencies {
 
 ```
 dependencies {
+    implementation project(":core")
     implementation 'com.github.crykn.guacamole:gdx:X.Y.Z:sources'
+    implementation 'com.github.crykn.guacamole:gdx-gwt:X.Y.Z'
     implementation 'com.github.crykn.guacamole:gdx-gwt:X.Y.Z:sources'
 }
 ```
