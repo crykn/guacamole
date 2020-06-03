@@ -1,5 +1,7 @@
 # guacamole
 
+[![Release](https://jitpack.io/v/crykn/guacamole.svg)](https://jitpack.io/#crykn/guacamole)
+
 A small library of some common and **very basic utils for [libGDX](https://github.com/libgdx/libgdx) games**, which is used in [libgdx-screenmanager](https://github.com/crykn/libgdx-screenmanager) and [eskalon-commons](https://github.com/eskalon/eskalon-commons).
 
 ## Core 

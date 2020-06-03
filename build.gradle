@@ -37,7 +37,7 @@ project(":core") {
 	apply plugin: "java-library"
 
     dependencies {
-    	implementation "com.google.code.findbugs:jsr305:$jsrVersion"
+    	api "com.google.code.findbugs:jsr305:$jsrVersion"
     	
     	testImplementation "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
     } 
@@ -46,7 +46,7 @@ project(":gdx") {
 	apply plugin: "java-library"
 	
     dependencies {
-    	implementation project(":core")
+    	api project(":core")
         implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
        
         testImplementation "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
@@ -58,8 +58,8 @@ project(":gdx-desktop") {
 	apply plugin: "java-library"
 	
     dependencies {
-    	implementation project(":core")
-    	implementation project(":gdx")
+    	api project(":core")
+    	api project(":gdx")
         implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
         implementation "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
         
