@@ -1,0 +1,74 @@
+## Java
+*.class
+*.war
+*.ear
+hs_err_pid*
+
+## Eclipse
+.classpath
+.project
+.metadata/
+/core/bin/
+/gdx/bin/
+/gdx-desktop/bin/
+/gdx-gwt/bin/
+*.tmp
+*.bak
+*.swp
+*~.nib
+.settings/
+.loadpath
+.externalToolBuilders/
+*.launch
+
+## NetBeans
+/nbproject/private/
+/core/nbproject/private/
+/gdx/nbproject/private/
+/gdx-desktop/nbproject/private/
+/gdx-gwt/nbproject/private/
+
+/build/
+/core/build/
+/gdx/build/
+/gdx-desktop/build/
+/gdx-gwt/build/
+
+/nbbuild/
+/core/nbbuild/
+/gdx/nbbuild/
+/gdx-desktop/nbbuild/
+/gdx-gwt/nbbuild/
+
+/dist/
+/core/dist/
+/gdx/dist/
+/gdx-desktop/dist/
+/gdx-gwt/dist/
+
+/nbdist/
+/core/nbdist/
+/gdx/nbdist/
+/gdx-desktop/nbdist/
+/gdx-gwt/nbdist/
+
+nbactions.xml
+nb-configuration.xml
+
+## Gradle
+/local.properties
+.gradle/
+gradle-app.setting
+/build/
+/core/build/
+/gdx/build/
+/gdx-desktop/build/
+/gdx-gwt/build/
+
+## OS Specific
+.DS_Store
+Thumbs.db
+
+## Project Specific
+*.log
+/bin/

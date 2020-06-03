@@ -1,0 +1,85 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        jcenter()
+        maven { url 'https://jitpack.io' }
+    }
+    dependencies {
+    }
+}
+
+allprojects {
+    apply plugin: "eclipse"
+    apply plugin: "idea"
+
+    version = "0.1.0"
+    ext {
+        appName = "guacamole"
+        gdxVersion = "1.9.10"
+        jsrVersion = "3.0.2"
+        junitVersion = "5.6.0"
+        mockitoVersion = "3.2.4"
+    }
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+        maven { url "https://jitpack.io" }
+        jcenter()
+    }
+}
+
+project(":core") {
+	apply plugin: "java-library"
+
+    dependencies {
+    	implementation "com.google.code.findbugs:jsr305:$jsrVersion"
+    	
+    	testImplementation "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
+    } 
+}
+project(":gdx") {
+	apply plugin: "java-library"
+	
+    dependencies {
+    	implementation project(":core")
+        implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
+       
+        testImplementation "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
+        testImplementation "org.mockito:mockito-core:$mockitoVersion"
+    }
+}
+
+project(":gdx-desktop") {
+	apply plugin: "java-library"
+	
+    dependencies {
+    	implementation project(":core")
+    	implementation project(":gdx")
+        implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
+        implementation "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
+        
+        //testImplementation "com.badlogicgames.gdx:gdx:$gdxVersion"
+        //testImplementation "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
+        //testImplementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+    }
+}
+
+project(":gdx-gwt") {
+	apply plugin: "java-library"
+	
+    dependencies {
+		implementation "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion"
+    }
+}
+
+// Clearing Eclipse project data in root folder:
+tasks.eclipse.doLast {
+	delete '.project'
+	delete '.classpath'
+	delete '.settings/'
+}
