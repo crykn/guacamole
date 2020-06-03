@@ -79,7 +79,7 @@ public class NestableFrameBuffer extends FrameBuffer {
 	}
 
 	/**
-	 * Binds the frame buffer and sets the viewport accordingly, so everything
+	 * Binds the framebuffer and sets the viewport accordingly, so everything
 	 * gets drawn to it.
 	 */
 	@Override
@@ -96,7 +96,7 @@ public class NestableFrameBuffer extends FrameBuffer {
 	}
 
 	/**
-	 * Makes the frame buffer current so everything gets drawn to it.
+	 * Makes the framebuffer current so everything gets drawn to it.
 	 * <p>
 	 * The static {@link #unbind()} method is always rebinding the
 	 * <i>default</i> framebuffer afterwards.
