@@ -4,9 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 import org.junit.jupiter.api.Test;
 
-import de.damios.guacamole.gdx.MeshGenerator;
-
-public class MeshGeneratorTest {
+public class MeshGeneratorTest extends LibgdxUnitTest {
 
 	@Test
 	public void testFullScreenQuad() {
