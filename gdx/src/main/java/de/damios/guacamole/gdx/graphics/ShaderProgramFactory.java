@@ -1,4 +1,4 @@
-package de.damios.guacamole.gdx;
+package de.damios.guacamole.gdx.graphics;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;

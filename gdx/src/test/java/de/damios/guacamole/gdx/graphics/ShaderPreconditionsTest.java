@@ -1,4 +1,4 @@
-package de.damios.guacamole.gdx;
+package de.damios.guacamole.gdx.graphics;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -8,7 +8,7 @@ import org.mockito.Mockito;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 
-import de.damios.guacamole.gdx.ShaderProgramFactory.ShaderPreconditions;
+import de.damios.guacamole.gdx.graphics.ShaderProgramFactory.ShaderPreconditions;
 
 public class ShaderPreconditionsTest {
 

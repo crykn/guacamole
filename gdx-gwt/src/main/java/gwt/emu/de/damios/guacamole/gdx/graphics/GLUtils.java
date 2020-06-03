@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package de.damios.guacamole.gdx;
+package de.damios.guacamole.gdx.graphics;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;

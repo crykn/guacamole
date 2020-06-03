@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package de.damios.guacamole.gdx;
+package de.damios.guacamole.gdx.graphics;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;

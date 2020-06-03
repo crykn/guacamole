@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package de.damios.guacamole.gdx;
+package de.damios.guacamole.gdx.graphics;
 
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.VertexAttribute;
@@ -23,9 +23,9 @@ import com.badlogic.gdx.graphics.VertexAttribute;
  * 
  * @author damios
  */
-public final class MeshGenerator {
+public final class QuadMeshGenerator {
 
-	private MeshGenerator() {
+	private QuadMeshGenerator() {
 		throw new UnsupportedOperationException();
 	}
 
