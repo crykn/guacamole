@@ -2,6 +2,8 @@ package de.damios.guacamole;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.Test;
 
 public class PreconditionsTest {
@@ -40,6 +42,21 @@ public class PreconditionsTest {
 			Preconditions.checkNotNull(null, "abc");
 		});
 		Preconditions.checkNotNull("", "abc");
+
+		// Empty
+		ArrayList<Integer> a = new ArrayList<>();
+		a.add(5);
+		ArrayList<Integer> b = new ArrayList<>();
+
+		assertThrows(IllegalArgumentException.class, () -> {
+			Preconditions.checkNotEmpty(b);
+		});
+		Preconditions.checkNotEmpty(a);
+
+		assertThrows(IllegalArgumentException.class, () -> {
+			Preconditions.checkNotEmpty(b, "abc");
+		});
+		Preconditions.checkNotEmpty(a, "abc");
 
 	}
 

@@ -15,10 +15,17 @@
 
 package de.damios.guacamole;
 
+import java.util.Collection;
+
+import javax.annotation.Nullable;
+
 /**
  * Static methods to help check whether some argument, state or object is valid.
- * <p>
  * If the precondition in question is not met, an unchecked exception is thrown.
+ * <p>
+ * Inspired by
+ * <a href="https://github.com/google/guava/wiki/PreconditionsExplained">
+ * guava</a>.
  * 
  * @author damios
  */
@@ -50,7 +57,7 @@ public final class Preconditions {
 	 * @throws IllegalArgumentException
 	 *             if {@code expr} is false
 	 */
-	public static void checkArgument(boolean expr, String msg) {
+	public static void checkArgument(boolean expr, @Nullable String msg) {
 		if (!expr) {
 			throw new IllegalArgumentException(msg);
 		}
@@ -78,7 +85,7 @@ public final class Preconditions {
 	 * @throws IllegalStateException
 	 *             if {@code expr} is false
 	 */
-	public static void checkState(boolean expr, String msg) {
+	public static void checkState(boolean expr, @Nullable String msg) {
 		if (!expr) {
 			throw new IllegalStateException(msg);
 		}
@@ -106,10 +113,36 @@ public final class Preconditions {
 	 * @throws NullPointerException
 	 *             if {@code obj} is {@code null}
 	 */
-	public static void checkNotNull(Object obj, String msg) {
+	public static void checkNotNull(Object obj, @Nullable String msg) {
 		if (obj == null) {
 			throw new NullPointerException(msg);
 		}
+	}
+
+	/**
+	 * Ensures that the given collection is not empty.
+	 * 
+	 * @param <E>
+	 * @param coll
+	 * @throws IllegalStateException
+	 *             if {@code coll} is empty
+	 */
+	public static <E> void checkNotEmpty(Collection<E> coll) {
+		checkArgument(!coll.isEmpty());
+	}
+
+	/**
+	 * Ensures that the given collection is not empty.
+	 * 
+	 * @param <E>
+	 * @param coll
+	 * @param msg
+	 *            the exception message used
+	 * @throws IllegalStateException
+	 *             if {@code coll} is empty
+	 */
+	public static <E> void checkNotEmpty(Collection<E> coll, String msg) {
+		checkArgument(!coll.isEmpty(), msg);
 	}
 
 }

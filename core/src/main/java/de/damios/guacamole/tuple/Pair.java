@@ -13,30 +13,32 @@
  * limitations under the License.
  */
 
-package de.damios.guacamole;
+package de.damios.guacamole.tuple;
 
 import java.util.Objects;
 
 import javax.annotation.Nullable;
 
 /**
- * A tuple.
+ * An immutable pair.
  * 
  * @author damios
  */
-public class Triple<X, Y, Z> extends Pair<X, Y> {
+public class Pair<X, Y> {
 
 	@Nullable
-	public final Z z;
+	public final X x;
+	@Nullable
+	public final Y y;
 
-	public Triple(@Nullable X x, @Nullable Y y, @Nullable Z z) {
-		super(x, y);
-		this.z = z;
+	public Pair(@Nullable X x, @Nullable Y y) {
+		this.x = x;
+		this.y = y;
 	}
 
 	@Override
 	public String toString() {
-		return "(" + x + "," + y + "," + z + ")";
+		return "(" + x + "," + y + ")";
 	}
 
 	@Override
@@ -45,16 +47,15 @@ public class Triple<X, Y, Z> extends Pair<X, Y> {
 			return true;
 		}
 
-		if (!(other instanceof Triple)) {
+		if (!(other instanceof Pair)) {
 			return false;
 		}
 
 		@SuppressWarnings("unchecked")
-		Triple<X, Y, Z> other_ = (Triple<X, Y, Z>) other;
+		Pair<X, Y> other_ = (Pair<X, Y>) other;
 
 		return Objects.equals(other_.x, this.x)
-				&& Objects.equals(other_.y, this.y)
-				&& Objects.equals(other_.z, this.z);
+				&& Objects.equals(other_.y, this.y);
 	}
 
 	@Override
@@ -63,7 +64,6 @@ public class Triple<X, Y, Z> extends Pair<X, Y> {
 		int result = 1;
 		result = prime * result + ((x == null) ? 0 : x.hashCode());
 		result = prime * result + ((y == null) ? 0 : y.hashCode());
-		result = prime * result + ((z == null) ? 0 : z.hashCode());
 		return result;
 	}
 

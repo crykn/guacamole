@@ -74,6 +74,8 @@ project(":gdx-gwt") {
 	
     dependencies {
 		implementation "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion"
+		implementation "com.github.tommyettinger:formic:0.1.3"
+		implementation "com.github.tommyettinger:formic:0.1.3:sources"
     }
 }
 

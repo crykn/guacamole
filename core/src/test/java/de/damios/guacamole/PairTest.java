@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
+import de.damios.guacamole.tuple.Pair;
+
 public class PairTest {
 
 	@SuppressWarnings({ "unlikely-arg-type", "unchecked", "rawtypes" })

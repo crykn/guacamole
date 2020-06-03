@@ -5,4 +5,6 @@
 	<source path="gwt">
 		<exclude name="**/emu/**" />
 	</source>
+	
+	<inherits name="text.formic" />
 </module>
