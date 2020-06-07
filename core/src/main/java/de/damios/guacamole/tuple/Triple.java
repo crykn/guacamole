@@ -36,7 +36,7 @@ public class Triple<X, Y, Z> extends Pair<X, Y> {
 
 	@Override
 	public String toString() {
-		return "(" + x + "," + y + "," + z + ")";
+		return "Triple{" + x + "," + y + "," + z + "}";
 	}
 
 	@Override

@@ -15,7 +15,7 @@ public class PairTest {
 		Pair t = new Pair("abc", Integer.valueOf(123));
 
 		// Equals
-		assertEquals("(abc,123)", t.toString());
+		assertEquals("Pair{abc,123}", t.toString());
 		assertTrue(t.equals(t));
 		assertTrue(!t.equals("asdf"));
 		assertTrue(t.equals(new Pair("abc", Integer.valueOf(123))));

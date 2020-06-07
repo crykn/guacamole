@@ -10,6 +10,9 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 
 import de.damios.guacamole.gdx.graphics.ShaderProgramFactory.ShaderPreconditions;
 
+/**
+ * Tests the {@link ShaderPreconditions}.
+ */
 public class ShaderPreconditionsTest {
 
 	@Test

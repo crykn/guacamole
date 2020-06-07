@@ -32,6 +32,13 @@ public class Log {
 	private Log() {
 		throw new UnsupportedOperationException();
 	}
+	
+	/**
+	 * Disables all log messages.
+	 */
+	public static void showNone() {
+		Gdx.app.setLogLevel(Application.LOG_NONE);
+	}
 
 	/**
 	 * Enables only error messages.
@@ -43,7 +50,7 @@ public class Log {
 	/**
 	 * Enables info messages, in addition to error messages.
 	 */
-	public static void showInfo() {
+	public static void showInfoAndErrors() {
 		Gdx.app.setLogLevel(Application.LOG_INFO);
 	}
 
@@ -52,13 +59,6 @@ public class Log {
 	 */
 	public static void showAll() {
 		Gdx.app.setLogLevel(Application.LOG_DEBUG);
-	}
-
-	/**
-	 * Disables log messages.
-	 */
-	public static void showNone() {
-		Gdx.app.setLogLevel(Application.LOG_NONE);
 	}
 
 	/**

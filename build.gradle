@@ -14,7 +14,7 @@ allprojects {
     apply plugin: "eclipse"
     apply plugin: "idea"
 
-    version = "0.1.0"
+    version = "0.2.0"
     ext {
         appName = "guacamole"
         formicVersion = "0.1.4"
@@ -56,6 +56,10 @@ project(":gdx") {
         testImplementation "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
         testImplementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
     }
+    
+    sourceSets.test {
+   		resources.srcDirs = ["src/test/assets"]
+	}
 }
 
 project(":gdx-desktop") {

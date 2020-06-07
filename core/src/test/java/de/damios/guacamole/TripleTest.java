@@ -16,7 +16,7 @@ public class TripleTest {
 				Boolean.valueOf(false));
 
 		// Equals
-		assertEquals("(abc,123,false)", t.toString());
+		assertEquals("Triple{abc,123,false}", t.toString());
 		assertTrue(t.equals(t));
 		assertTrue(!t.equals("asdf"));
 		assertTrue(t.equals(new Triple("abc", Integer.valueOf(123),
