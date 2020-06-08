@@ -7,7 +7,6 @@ import java.util.ArrayList;
 
 import org.lwjgl.system.macosx.LibC;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.utils.UIUtils;
 
 /**
@@ -53,9 +52,6 @@ public class StartOnFirstThreadHelper {
 
 		long pid = LibC.getpid();
 
-		System.out.println(pid);
-		System.out.println(ManagementFactory.getRuntimeMXBean().getName().split("@")[0]);
-
 		// check whether -XstartOnFirstThread is enabled
 		if ("1".equals(System.getenv("JAVA_STARTED_ON_FIRST_THREAD_" + pid))) {
 			return false;
@@ -64,7 +60,7 @@ public class StartOnFirstThreadHelper {
 		// check whether the JVM was previously restarted
 		// avoids looping, but most certainly leads to a crash
 		if ("true".equals(System.getProperty(JVM_RESTARTED_ARG))) {
-			Gdx.app.error("StartOnFirstThreadHelper",
+			System.err.println(
 					"There was a problem evaluating whether the JVM was started with the -XstartOnFirstThread argument");
 			return false;
 		}
