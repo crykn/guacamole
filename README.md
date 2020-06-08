@@ -68,4 +68,6 @@ Module file (_GdxDefinition.gwt.xml_):
    * [DefaultInputProcessor](https://github.com/crykn/guacamole/blob/master/gdx/src/main/java/de/damios/guacamole/gdx/DefaultInputProcessor.java): an `InputProcessor` providing default methods to reduce boilerplate code; is an interface alternative to `InputAdapter`
 * **gdx-desktop**
    * [Sync](https://github.com/crykn/guacamole/blob/master/gdx-desktop/src/main/java/de/damios/guacamole/gdx/Sync.java): Adds the commonly used [sync class](http://forum.lwjgl.org/index.php?topic=6582.msg34846#msg34846) (originally from LWJGL2), which helps mitigate the fps issues in LWJGL3; see [here](https://github.com/crykn/guacamole/wiki/Sync-usage) for how to use it
+   * [StartOnFirstThreadHelper](https://github.com/crykn/guacamole/blob/master/gdx-desktop/src/main/java/de/damios/guacamole/gdx/StartOnFirstThreadHelper.java): Restarts the JVM if it isn't started with the `-XstartOnFirstThread` argument on Mac OS
+   
 
