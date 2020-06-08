@@ -7,7 +7,6 @@ import java.util.ArrayList;
 
 import org.lwjgl.system.macosx.LibC;
 
-import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.utils.UIUtils;
 
@@ -48,8 +47,7 @@ public class StartOnFirstThreadHelper {
 	 * @return whether the JVM is restarting and thus no code should be executed
 	 */
 	public static boolean isJVMRestarting() {
-		if ((Gdx.app.getType() == ApplicationType.Desktop || Gdx.app.getType() == ApplicationType.HeadlessDesktop)
-				&& UIUtils.isMac) {
+		if (!UIUtils.isMac) {
 			return false;
 		}
 
