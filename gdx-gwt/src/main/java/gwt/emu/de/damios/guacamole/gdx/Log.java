@@ -25,8 +25,7 @@ import text.formic.Stringf;
 
 /**
  * A static helper class to make logging in libGDX easier. Adds support for
- * {@link String#format(String, Object...)} (or
- * {@link Stringf#format(String, Object...)} on GWT).
+ * formatting ( {@link Stringf#format(String, Object...)}).
  * 
  * @author damios
  */
@@ -34,6 +33,13 @@ public class Log {
 
 	private Log() {
 		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * Disables all log messages.
+	 */
+	public static void showNone() {
+		Gdx.app.setLogLevel(Application.LOG_NONE);
 	}
 
 	/**
@@ -46,7 +52,7 @@ public class Log {
 	/**
 	 * Enables info messages, in addition to error messages.
 	 */
-	public static void showInfo() {
+	public static void showInfoAndErrors() {
 		Gdx.app.setLogLevel(Application.LOG_INFO);
 	}
 
@@ -58,10 +64,24 @@ public class Log {
 	}
 
 	/**
-	 * Disables log messages.
+	 * @return whether debug messages are logged
 	 */
-	public static void showNone() {
-		Gdx.app.setLogLevel(Application.LOG_NONE);
+	public static boolean isDebugEnabled() {
+		return Gdx.app.getLogLevel() >= Application.LOG_DEBUG;
+	}
+
+	/**
+	 * @return whether info messages are logged
+	 */
+	public static boolean isInfoEnabled() {
+		return Gdx.app.getLogLevel() >= Application.LOG_INFO;
+	}
+
+	/**
+	 * @return whether error messages are logged
+	 */
+	public static boolean isErrorEnabled() {
+		return Gdx.app.getLogLevel() >= Application.LOG_ERROR;
 	}
 
 	/**
@@ -85,16 +105,14 @@ public class Log {
 	 * @param message
 	 *            the actual log message
 	 * @param args
-	 *            the arguments referenced by the format specifiers in the
-	 *            message string. If there are more arguments than format
-	 *            specifiers, the extra arguments are ignored. The number of
-	 *            arguments is variable and may be zero.
+	 *            the arguments referenced by the format specifiers in the message
+	 *            string. If there are more arguments than format specifiers, the
+	 *            extra arguments are ignored. The number of arguments is variable
+	 *            and may be zero.
 	 * @see Formatter
 	 */
 	public static void info(String tag, String message, Object... args) {
-		if (Gdx.app.getLogLevel() >= Application.LOG_INFO) // so the message
-															// isn't formatted
-															// unnecessarily
+		if (isInfoEnabled()) // so the message isn't formatted unnecessarily
 			Gdx.app.log(tag, Stringf.format(message, args));
 	}
 
@@ -108,16 +126,14 @@ public class Log {
 	 * @param message
 	 *            the actual error message
 	 * @param args
-	 *            the arguments referenced by the format specifiers in the
-	 *            message string. If there are more arguments than format
-	 *            specifiers, the extra arguments are ignored. The number of
-	 *            arguments is variable and may be zero.
+	 *            the arguments referenced by the format specifiers in the message
+	 *            string. If there are more arguments than format specifiers, the
+	 *            extra arguments are ignored. The number of arguments is variable
+	 *            and may be zero.
 	 * @see Formatter
 	 */
 	public static void error(String tag, String message, Object... args) {
-		if (Gdx.app.getLogLevel() >= Application.LOG_ERROR) // so the message
-															// isn't formatted
-															// unnecessarily
+		if (isErrorEnabled()) // so the message isn't formatted unnecessarily
 			Gdx.app.error(tag, Stringf.format(message, args));
 	}
 
@@ -131,17 +147,15 @@ public class Log {
 	 * @param message
 	 *            the actual log message
 	 * @param args
-	 *            the arguments referenced by the format specifiers in the
-	 *            message string. If there are more arguments than format
-	 *            specifiers, the extra arguments are ignored. The number of
-	 *            arguments is variable and may be zero.
+	 *            the arguments referenced by the format specifiers in the message
+	 *            string. If there are more arguments than format specifiers, the
+	 *            extra arguments are ignored. The number of arguments is variable
+	 *            and may be zero.
 	 * @see Formatter
 	 * @see #enableDebugLogging()
 	 */
 	public static void debug(String tag, String message, Object... args) {
-		if (Gdx.app.getLogLevel() >= Application.LOG_DEBUG) // so the message
-															// isn't formatted
-															// unnecessarily
+		if (isDebugEnabled()) // so the message isn't formatted unnecessarily
 			Gdx.app.debug(tag, Stringf.format(message, args));
 	}
 

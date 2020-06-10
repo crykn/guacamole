@@ -1,3 +1,18 @@
+/*
+ * Copyright 2020 damios
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at:
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package de.damios.guacamole.gdx;
 
 import java.io.BufferedReader;
@@ -16,8 +31,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.UIUtils;
  * 
  * @author damios
  * @see <a href=
- *      "http://www.java-gaming.org/topics/starting-jvm-on-mac-with-xstartonfirstthread-programmatically/37697/view.html">Inspired
- *      by http://www.java-gaming.org/topics/-/37697/view.html</a>
+ *      "http://www.java-gaming.org/topics/starting-jvm-on-mac-with-xstartonfirstthread-programmatically/37697/view.html">Based
+ *      on http://www.java-gaming.org/topics/-/37697/view.html</a>
  *
  */
 public class StartOnFirstThreadHelper {
@@ -29,23 +44,29 @@ public class StartOnFirstThreadHelper {
 	}
 
 	/**
-	 * Returns whether the JVM is restarting. This is the case if the application
-	 * was started on Mac OS without the {@code -XstartOnFirstThread} argument.
+	 * Starts a new JVM if the application was started on Mac OS without the
+	 * {@code -XstartOnFirstThread} argument. Returns whether a new JVM was started
+	 * and thus no code should be executed.
 	 * <p>
 	 * <u>Usage:</u>
 	 * 
 	 * <pre>
 	 * public static void main(String... args) {
-	 * 	if (StartOnFirstThreadHelper.isJVMRestarting()) {
+	 * 	if (StartOnFirstThreadHelper.startNewJvmIfRequired()) {
 	 * 		return; // don't execute any code
 	 * 	}
 	 * 	// the actual main method code
 	 * }
 	 * </pre>
 	 * 
-	 * @return whether the JVM is restarting and thus no code should be executed
+	 * @param redirectOutput
+	 *            whether the output of the new JVM should be rerouted to the new
+	 *            JVM, so it can be accessed in the same place; keeps the old JVM
+	 *            running if enabled
+	 * @return whether a new JVM was started and thus no code should be executed in
+	 *         this one
 	 */
-	public static boolean isJVMRestarting() {
+	public static boolean startNewJvmIfRequired(boolean redirectOutput) {
 		if (!UIUtils.isMac) {
 			return false;
 		}
@@ -77,16 +98,22 @@ public class StartOnFirstThreadHelper {
 		jvmArgs.add(System.getenv("JAVA_MAIN_CLASS_" + pid));
 
 		try {
-			Process process = (new ProcessBuilder(jvmArgs)).redirectErrorStream(true).start();
-			BufferedReader processOutput = new BufferedReader(new InputStreamReader(process.getInputStream()));
-			String line;
+			if (!redirectOutput) {
+				ProcessBuilder processBuilder = new ProcessBuilder(jvmArgs);
+				processBuilder.start();
+			} else {
+				Process process = (new ProcessBuilder(jvmArgs)).redirectErrorStream(true).start();
+				BufferedReader processOutput = new BufferedReader(new InputStreamReader(process.getInputStream()));
+				String line;
 
-			while ((line = processOutput.readLine()) != null) {
-				System.out.println(line);
+				while ((line = processOutput.readLine()) != null) {
+					System.out.println(line);
+				}
+
+				process.waitFor();
 			}
-
-			process.waitFor();
 		} catch (Exception e) {
+			System.err.println("There was a problem restarting the JVM");
 			e.printStackTrace();
 		}
 
@@ -94,13 +121,46 @@ public class StartOnFirstThreadHelper {
 	}
 
 	/**
-	 * An alternative to {@link #isJVMRestarting()} that takes the actual main
-	 * method code as a Runnable. Is easily readable when used with lambdas.
+	 * Starts a new JVM if the application was started on Mac OS without the
+	 * {@code -XstartOnFirstThread} argument. Returns whether a new JVM was started
+	 * and thus no code should be executed. Redirects the output of the new JVM to
+	 * the old one.
+	 * <p>
+	 * <u>Usage:</u>
+	 * 
+	 * <pre>
+	 * public static void main(String... args) {
+	 * 	if (StartOnFirstThreadHelper.startNewJvmIfRequired()) {
+	 * 		return; // don't execute any code
+	 * 	}
+	 * 	// the actual main method code
+	 * }
+	 * </pre>
+	 * 
+	 * @return whether a new JVM was started and thus no code should be executed in
+	 *         this one
+	 */
+	public static boolean startNewJvmIfRequired() {
+		return startNewJvmIfRequired(true);
+	}
+
+	/**
+	 * Starts a new JVM if required; otherwise executes the main method code given
+	 * as Runnable. When used with lambdas, this is allows for less verbose code
+	 * than {@link #startNewJvmIfRequired()}:
+	 * 
+	 * <pre>
+	 * public static void main(String... args) {
+	 * 	StartOnFirstThreadHelper.executeIfJVMValid(() -> {
+	 * 		// the actual main method code
+	 * 	});
+	 * }
+	 * </pre>
 	 * 
 	 * @param mainMethodCode
 	 */
 	public static void executeIfJVMValid(Runnable mainMethodCode) {
-		if (isJVMRestarting()) {
+		if (startNewJvmIfRequired()) {
 			return;
 		}
 		mainMethodCode.run();

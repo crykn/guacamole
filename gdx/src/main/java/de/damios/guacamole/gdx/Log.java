@@ -23,7 +23,7 @@ import com.badlogic.gdx.Gdx;
 
 /**
  * A static helper class to make logging in libGDX easier. Adds support for
- * {@link String#format(String, Object...)}.
+ * formatting ( {@link String#format(String, Object...)}).
  * 
  * @author damios
  */

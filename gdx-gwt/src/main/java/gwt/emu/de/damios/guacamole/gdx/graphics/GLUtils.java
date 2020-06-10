@@ -44,7 +44,7 @@ public class GLUtils {
 	/**
 	 * Returns the name of the currently bound frame buffer.
 	 * <p>
-	 * All credit for the gwt implementation of this method goes to <a href=
+	 * All credit for the web implementation of this method goes to <a href=
 	 * "https://github.com/crashinvaders/gdx-vfx/blob/master/gdx-vfx/gwt/src/com/crashinvaders/vfx/gwt/GwtVfxGlExtension.java#L35-L68">metaphore</a>!
 	 * 
 	 * @return returns the name of the currently bound frame buffer. The initial
