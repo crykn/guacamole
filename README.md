@@ -20,7 +20,11 @@ dependencies {
 * [@GwtIncompatible](https://github.com/crykn/guacamole/blob/master/core/src/main/java/de/damios/guacamole/annotations/GwtIncompatible.java): indicates that an API is not compatible with GWT and thus shouldn't be compiled for it
 * Simple callback & listener interfaces: [ISimpleCallback](https://github.com/crykn/guacamole/blob/master/core/src/main/java/de/damios/guacamole/ISimpleCallback.java), [ISimpleListener](https://github.com/crykn/guacamole/blob/master/core/src/main/java/de/damios/guacamole/ISimpleListener.java), [ISuccessCallback](https://github.com/crykn/guacamole/blob/master/core/src/main/java/de/damios/guacamole/ISuccessCallback.java)
 
+<br/>
+
 ## gdx & gdx-desktop & gdx-gwt
+
+### gdx & gdx-gwt
 
 **Core project:**
 
@@ -28,15 +32,6 @@ dependencies {
 dependencies {
     // guacamole-core is included
     implementation "com.github.crykn.guacamole:gdx:$guacamoleVersion"
-}
-```
-
-**Desktop project:**
-
-```
-dependencies {
-    implementation project(":core")
-    implementation "com.github.crykn.guacamole:gdx-desktop:$guacamoleVersion"
 }
 ```
 
@@ -58,16 +53,28 @@ Module file (_GdxDefinition.gwt.xml_):
 <inherits name="guacamole_gdx_gwt" />
 ```
 
-### What is added:
+**What is added:**
 
-* **gdx & gdx-gwt**
    * [NestableFrameBuffer](https://github.com/crykn/guacamole/blob/master/gdx/src/main/java/de/damios/guacamole/gdx/graphics/NestableFrameBuffer.java): a nestable framebuffer implementation, see [here](https://github.com/crykn/libgdx-screenmanager/wiki/Custom-FrameBuffer-implementation) for details
    * [ShaderProgramFactory](https://github.com/crykn/guacamole/blob/master/gdx/src/main/java/de/damios/guacamole/gdx/graphics/ShaderProgramFactory.java) & [ShaderPreconditions](https://github.com/crykn/guacamole/blob/master/gdx/src/main/java/de/damios/guacamole/gdx/graphics/ShaderProgramFactory.java#L107): Adds methods to easily create & compile a shader (`#fromString(String, String)`); automatically throws exceptions when the compilation fails; prepends can be ignored
    * [Log](https://github.com/crykn/guacamole/blob/master/gdx/src/main/java/de/damios/guacamole/gdx/Log.java): Adds a static helper class to log stuff using the libGDX logger; adds support for `String#format(String, Object...)`; is super-sourced on GWT via [formic](https://github.com/tommyettinger/formic)
    * [Text](https://github.com/crykn/guacamole/blob/master/gdx/src/main/java/de/damios/guacamole/gdx/assets/Text.java) asset type
    * [QuadMeshGenerator](https://github.com/crykn/guacamole/blob/master/gdx/src/main/java/de/damios/guacamole/gdx/graphics/QuadMeshGenerator.java): allows easily creating different quads; is useful when applying shaders
    * [DefaultInputProcessor](https://github.com/crykn/guacamole/blob/master/gdx/src/main/java/de/damios/guacamole/gdx/DefaultInputProcessor.java): an `InputProcessor` providing default methods to reduce boilerplate code; is an interface alternative to `InputAdapter`
-* **gdx-desktop**
+   
+### gdx-desktop
+
+**Desktop project:**
+
+```
+dependencies {
+    implementation project(":core")
+    implementation "com.github.crykn.guacamole:gdx-desktop:$guacamoleVersion"
+}
+```
+
+**What is added:**
+
    * [Sync](https://github.com/crykn/guacamole/blob/master/gdx-desktop/src/main/java/de/damios/guacamole/gdx/Sync.java): Adds the commonly used [sync class](http://forum.lwjgl.org/index.php?topic=6582.msg34846#msg34846) (originally from LWJGL2), which helps mitigate the fps issues in LWJGL3; see [here](https://github.com/crykn/guacamole/wiki/Sync-usage) for how to use it
    * [StartOnFirstThreadHelper](https://github.com/crykn/guacamole/blob/master/gdx-desktop/src/main/java/de/damios/guacamole/gdx/StartOnFirstThreadHelper.java): Starts a new JVM if the current one was not started with the `-XstartOnFirstThread` argument on Mac OS
    
