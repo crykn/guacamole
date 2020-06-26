@@ -40,6 +40,8 @@ import static org.lwjgl.glfw.GLFW.glfwGetTime;
  *
  * @author Riven
  * @author kappaOne
+ * @see <a href= "https://github.com/crykn/guacamole/wiki/Sync-usage">How to use
+ *      this class</a>
  */
 public class Sync {
 
