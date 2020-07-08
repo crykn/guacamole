@@ -51,8 +51,8 @@ public class Sync {
 	/** The time to sleep/yield until the next frame */
 	private long nextFrame = 0;
 
-	/** whether the initialisation code has run */
-	private boolean initialised = false;
+	/** whether the initialization code has run */
+	private boolean initialized = false;
 
 	/**
 	 * for calculating the averages the previous sleep/yield times are stored
@@ -65,8 +65,8 @@ public class Sync {
 	}
 
 	/**
-	 * An accurate sync method that will attempt to run at a constant frame
-	 * rate. It should be called once every frame.
+	 * An accurate sync method that will attempt to run at a constant frame rate. It
+	 * should be called once every frame.
 	 * 
 	 * @param fps
 	 *            - the desired frame rate, in frames per second
@@ -74,14 +74,13 @@ public class Sync {
 	public void sync(int fps) {
 		if (fps <= 0)
 			return;
-		if (!initialised)
-			initialise();
+		if (!initialized)
+			initialize();
 
 		try {
 			// sleep until the average sleep time is greater than the time
 			// remaining till nextFrame
-			for (long t0 = getTime(), t1; (nextFrame - t0) > sleepDurations
-					.avg(); t0 = t1) {
+			for (long t0 = getTime(), t1; (nextFrame - t0) > sleepDurations.avg(); t0 = t1) {
 				Thread.sleep(1);
 				sleepDurations.add((t1 = getTime()) - t0); // update average
 															// sleep time
@@ -93,8 +92,7 @@ public class Sync {
 
 			// yield until the average yield time is greater than the time
 			// remaining till nextFrame
-			for (long t0 = getTime(), t1; (nextFrame - t0) > yieldDurations
-					.avg(); t0 = t1) {
+			for (long t0 = getTime(), t1; (nextFrame - t0) > yieldDurations.avg(); t0 = t1) {
 				Thread.yield();
 				yieldDurations.add((t1 = getTime()) - t0); // update average
 															// yield time
@@ -108,13 +106,13 @@ public class Sync {
 	}
 
 	/**
-	 * This method will initialise the sync method by setting initial values for
+	 * This method will initialize the sync method by setting initial values for
 	 * sleepDurations/yieldDurations and nextFrame.
 	 * 
 	 * If running on windows it will start the sleep timer fix.
 	 */
-	private void initialise() {
-		initialised = true;
+	private void initialize() {
+		initialized = true;
 
 		sleepDurations.init(1000 * 1000);
 		yieldDurations.init((int) (-(getTime() - getTime()) * 1.333));
