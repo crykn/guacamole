@@ -18,7 +18,7 @@ allprojects {
     ext {
         appName = "guacamole"
         formicVersion = "0.1.4"
-        gdxVersion = "1.9.10"
+        gdxVersion = "1.9.11"
         jsrVersion = "3.0.2"
         junitVersion = "5.6.0"
         mockitoVersion = "3.2.4"
