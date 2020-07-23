@@ -20,7 +20,7 @@ import java.util.Objects;
 import javax.annotation.Nullable;
 
 /**
- * An immutable tuple.
+ * An immutable triple.
  * 
  * @author damios
  */
