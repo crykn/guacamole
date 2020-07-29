@@ -51,10 +51,12 @@ public class ThreadHandler {
 	 * <p>
 	 * For this, a {@linkplain Executors#newCachedThreadPool() cached thread pool}
 	 * is used, i.e. previously constructed threads will be reused, if available,
-	 * otherwise new threads are created.
+	 * otherwise new threads are created. All threads are daemon threads, so they
+	 * don't prevent the JVM from exiting.
 	 * 
 	 * @param r
-	 * @return
+	 *            the task to execute
+	 * @return a {@link Future} representing pending completion of the task
 	 */
 	@SuppressWarnings("unchecked")
 	public Future<Void> executeRunnable(Runnable r) {
