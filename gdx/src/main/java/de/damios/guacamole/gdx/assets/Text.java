@@ -15,13 +15,13 @@
 
 package de.damios.guacamole.gdx.assets;
 
-import java.nio.charset.Charset;
+import java.io.UnsupportedEncodingException;
 
 import com.badlogic.gdx.files.FileHandle;
 
 /**
  * A simple asset type for text files. Uses the UTF-8-encoding if supported by
- * the local JVM.
+ * the local JVM; the platform's default encoding otherwise.
  *
  * @author damios
  * @see TextLoader The respective asset loader.
@@ -30,17 +30,23 @@ import com.badlogic.gdx.files.FileHandle;
  */
 public class Text {
 
-	private static final Charset CHARSET = Charset.isSupported("UTF-8")
-			? Charset.forName("UTF-8")
-			: Charset.defaultCharset();
+	private static final String CHARSET = "UTF-8"; // Charset.defaultCharset() etc. is not supported on GWT
 	private String string;
 
 	public Text(String string) {
-		this.string = new String(string.getBytes(), CHARSET);
+		this(string.getBytes());
 	}
 
 	public Text(FileHandle file) {
-		this(new String(file.readBytes(), CHARSET));
+		this(file.readBytes());
+	}
+
+	public Text(byte[] bytes) {
+		try {
+			this.string = new String(bytes, CHARSET);
+		} catch (UnsupportedEncodingException e) {
+			this.string = new String(bytes);
+		}
 	}
 
 	/**
