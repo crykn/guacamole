@@ -2,7 +2,7 @@
 
 [![Release](https://jitpack.io/v/crykn/guacamole.svg)](https://jitpack.io/#crykn/guacamole)
 
-A small collection of some common and **very basic utilities for [libGDX](https://github.com/libgdx/libgdx) games**, which is used in [libgdx-screenmanager](https://github.com/crykn/libgdx-screenmanager) and [eskalon-commons](https://github.com/eskalon/eskalon-commons).
+A small collection of some common and **very basic utilities for [libGDX](https://github.com/libgdx/libgdx) games**, which is used in [libgdx-screenmanager](https://github.com/crykn/libgdx-screenmanager) and [pancake](https://github.com/eskalon/pancake).
 
 ## Core 
 
