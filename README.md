@@ -1,6 +1,6 @@
 # guacamole
 
-[![Release](https://jitpack.io/v/crykn/guacamole.svg)](https://jitpack.io/#crykn/guacamole)
+[![Release](https://jitpack.io/v/crykn/guacamole.svg)](https://jitpack.io/#crykn/guacamole) [GWT Compatible](https://img.shields.io/badge/GWT-compatible-informational)
 
 A small collection of some common and **very basic utilities for [libGDX](https://github.com/libgdx/libgdx) games**, which is used in [libgdx-screenmanager](https://github.com/crykn/libgdx-screenmanager) and [eskalon-commons](https://github.com/eskalon/eskalon-commons).
 
