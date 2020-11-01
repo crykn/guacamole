@@ -90,7 +90,7 @@ public interface DefaultInputProcessor extends InputProcessor {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public default boolean scrolled(int amount) {
+	public default boolean scrolled(float amountX, float amountY) {
 		return false;
 	}
 

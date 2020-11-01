@@ -19,10 +19,8 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
 
-import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.utils.GdxRuntimeException;
 
 /**
  * OpenGL utilities.
@@ -49,15 +47,8 @@ public final class GLUtils {
 	 * 
 	 * @return the name of the currently bound framebuffer; the initial value is
 	 *         {@code 0}, indicating the default framebuffer
-	 * 
-	 * @see <a href= "https://github.com/libgdx/libgdx/issues/4688">The libGDX
-	 *      issue detailing the WebGL problems</a>
 	 */
 	public static synchronized int getBoundFboHandle() {
-		if (Gdx.app.getType() == ApplicationType.WebGL)
-			throw new GdxRuntimeException(
-					"This operation is not supported on WebGL without the libgdx-screenmanager-gwt extension!");
-
 		IntBuffer intBuf = USED_INT_BUFF;
 		Gdx.gl.glGetIntegerv(GL20.GL_FRAMEBUFFER_BINDING, intBuf);
 		return intBuf.get(0);

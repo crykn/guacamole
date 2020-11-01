@@ -1,4 +1,4 @@
-# guacamole
+ guacamole
 
 [![Release](https://jitpack.io/v/crykn/guacamole.svg)](https://jitpack.io/#crykn/guacamole) ![GWT Compatible](https://img.shields.io/badge/GWT-compatible-informational)
 
@@ -77,7 +77,6 @@ dependencies {
 
 **What is added:**
 
-   * [Sync](https://github.com/crykn/guacamole/blob/master/gdx-desktop/src/main/java/de/damios/guacamole/gdx/Sync.java): Adds the commonly used [sync class](http://forum.lwjgl.org/index.php?topic=6582.msg34846#msg34846) (originally from LWJGL2), which helps mitigate the fps issues in LWJGL3; see [here](https://github.com/crykn/guacamole/wiki/Sync-usage) for how to use it
    * [StartOnFirstThreadHelper](https://github.com/crykn/guacamole/blob/master/gdx-desktop/src/main/java/de/damios/guacamole/gdx/StartOnFirstThreadHelper.java): Starts a new JVM if the current one was not started with the `-XstartOnFirstThread` argument on Mac OS
    
 
