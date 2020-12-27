@@ -30,7 +30,6 @@ import com.badlogic.gdx.files.FileHandle;
  */
 public class Text {
 
-	private static final String CHARSET = "UTF-8"; // Charset.defaultCharset() etc. is not supported on GWT
 	private String string;
 
 	public Text(String string) {
@@ -41,9 +40,9 @@ public class Text {
 		this(file.readBytes());
 	}
 
-	public Text(byte[] bytes) {
-		try {
-			this.string = new String(bytes, CHARSET);
+	private Text(byte[] bytes) {
+		try { // Charset.defaultCharset() etc. is not supported on GWT
+			this.string = new String(bytes, "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			this.string = new String(bytes);
 		}
