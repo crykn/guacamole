@@ -1,4 +1,4 @@
- guacamole
+# guacamole
 
 [![Release](https://jitpack.io/v/crykn/guacamole.svg)](https://jitpack.io/#crykn/guacamole) ![GWT Compatible](https://img.shields.io/badge/GWT-compatible-informational)
 
