@@ -35,7 +35,7 @@ import com.badlogic.gdx.Gdx;
  */
 public class Logger {
 
-	private static String classPrefix;
+	private String classPrefix;
 
 	Logger(String className) {
 		this.classPrefix = String.format("[%s]: ", className);
