@@ -60,7 +60,9 @@ public class LoggerService {
 		if (logger != null)
 			return logger;
 		else {
-			return loggers.put(name, new Logger(name));
+			logger = new Logger(name);
+			loggers.put(name, logger);
+			return logger;
 		}
 	}
 
