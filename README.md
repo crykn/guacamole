@@ -21,6 +21,7 @@ dependencies {
 * Simple callback & listener interfaces: [ISimpleCallback](https://github.com/crykn/guacamole/blob/master/core/src/main/java/de/damios/guacamole/ISimpleCallback.java), [ISimpleListener](https://github.com/crykn/guacamole/blob/master/core/src/main/java/de/damios/guacamole/ISimpleListener.java), [ISuccessCallback](https://github.com/crykn/guacamole/blob/master/core/src/main/java/de/damios/guacamole/ISuccessCallback.java)
 * [ThreadHandler](https://github.com/crykn/guacamole/blob/master/core/src/main/java/de/damios/guacamole/concurrent/ThreadHandler.java): a class to easily offload simple, time-consuming tasks onto threads
 * [DaemonThreadFactory](https://github.com/crykn/guacamole/blob/master/core/src/main/java/de/damios/guacamole/concurrent/DaemonThreadFactory.java): a `ThreadFactory` creating daemon threads
+* [ClassUtils](https://github.com/crykn/guacamole/blob/master/core/src/main/java/de/damios/guacamole/ClassUtils.java): contains utilities for dealing with classes
 
 <br/>
 
@@ -59,7 +60,7 @@ Module file (_GdxDefinition.gwt.xml_):
 
    * [NestableFrameBuffer](https://github.com/crykn/guacamole/blob/master/gdx/src/main/java/de/damios/guacamole/gdx/graphics/NestableFrameBuffer.java): a nestable framebuffer implementation, see [here](https://github.com/crykn/libgdx-screenmanager/wiki/Custom-FrameBuffer-implementation) for details
    * [ShaderProgramFactory](https://github.com/crykn/guacamole/blob/master/gdx/src/main/java/de/damios/guacamole/gdx/graphics/ShaderProgramFactory.java) & [ShaderPreconditions](https://github.com/crykn/guacamole/blob/master/gdx/src/main/java/de/damios/guacamole/gdx/graphics/ShaderProgramFactory.java#L107): Adds methods to easily create & compile a shader (`#fromString(String, String)`); automatically throws exceptions when the compilation fails; prepends can be ignored
-   * [Log](https://github.com/crykn/guacamole/blob/master/gdx/src/main/java/de/damios/guacamole/gdx/Log.java): Adds a static helper class to log stuff using the libGDX logger; adds support for `String#format(String, Object...)`; is super-sourced on GWT via [formic](https://github.com/tommyettinger/formic)
+   * [Logger](https://github.com/crykn/guacamole/blob/master/gdx/src/main/java/de/damios/guacamole/gdx/log/Logger.java) & [LoggerService](https://github.com/crykn/guacamole/blob/master/gdx/src/main/java/de/damios/guacamole/gdx/log/LoggerService.java): supports formatting; is super-sourced on GWT via [formic](https://github.com/tommyettinger/formic); use `LoggerService.getLogger(MyGdxGame.class)` to obtain a logger; calling, for instance, `logger.error("something went %s!", "wrong")` leads to the following console output: `[ERROR] [c.b.g.m.MyGdxGame]: something went wrong!`
    * [Text](https://github.com/crykn/guacamole/blob/master/gdx/src/main/java/de/damios/guacamole/gdx/assets/Text.java) asset type
    * [QuadMeshGenerator](https://github.com/crykn/guacamole/blob/master/gdx/src/main/java/de/damios/guacamole/gdx/graphics/QuadMeshGenerator.java): allows easily creating different quads; is useful when applying shaders
    * [DefaultInputProcessor](https://github.com/crykn/guacamole/blob/master/gdx/src/main/java/de/damios/guacamole/gdx/DefaultInputProcessor.java): an `InputProcessor` providing default methods to reduce boilerplate code; is an interface alternative to `InputAdapter`
@@ -77,6 +78,6 @@ dependencies {
 
 **What is added:**
 
-   * [StartOnFirstThreadHelper](https://github.com/crykn/guacamole/blob/master/gdx-desktop/src/main/java/de/damios/guacamole/gdx/StartOnFirstThreadHelper.java): Starts a new JVM if the current one was not started with the `-XstartOnFirstThread` argument on Mac OS
+   * [StartOnFirstThreadHelper](https://github.com/crykn/guacamole/blob/master/gdx-desktop/src/main/java/de/damios/guacamole/gdx/StartOnFirstThreadHelper.java): Starts a new JVM if the current one was not started with the `-XstartOnFirstThread` argument on macOS
    
 
