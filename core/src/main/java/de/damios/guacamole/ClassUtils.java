@@ -27,15 +27,15 @@ public class ClassUtils {
 	}
 
 	/**
-	 * Abbreviates {@linkplain Class#getName() class names} by turning package
-	 * names into single letters. For example,
+	 * Abbreviates {@linkplain Class#getName() class names} by turning package names
+	 * into single letters. For example,
 	 * {@code com.badlogic.gdx.graphics.g2d.Sprite} turns into
 	 * {@code c.b.g.g.g.Sprite}.
 	 * 
 	 * @param clazz
 	 * @return
 	 */
-	public static String getAbbreviatedClassName(final Class clazz) {
+	public static String getAbbreviatedClassName(final Class<?> clazz) {
 		final String className = clazz.getName();
 		int packageLevels = 0;
 

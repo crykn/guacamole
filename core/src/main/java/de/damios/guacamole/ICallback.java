@@ -18,12 +18,15 @@ package de.damios.guacamole;
 import javax.annotation.Nullable;
 
 /**
- * A simple callback.
+ * A simple callback that differentiates between successful and failed
+ * executions.
  * 
  * @author damios
  */
-public interface ISimpleCallback {
+public interface ICallback<T> {
 
-	public void call(@Nullable Object param);
+	public void onSuccess(@Nullable T param);
+
+	public void onFailure(@Nullable T param);
 
 }
