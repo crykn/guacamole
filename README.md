@@ -14,7 +14,7 @@ dependencies {
 
 * [Preconditions](https://github.com/crykn/guacamole/blob/master/core/src/main/java/de/damios/guacamole/Preconditions.java): has methods like `#checkArgument(boolean, String)`, `#checkState(boolean, String)` & `#checkNotNull(Object, String)`; is slimmer than the commonly known class from [guava](https://github.com/google/guava/wiki/PreconditionsExplained)
 * [@Nullable](https://jcp.org/en/jsr/detail?id=305#2): the `@Nullable` annotation from JSR 305 is provided as a dependency 
-* [Exceptions](https://github.com/crykn/guacamole/blob/master/core/src/main/java/de/damios/guacamole/Exceptions.java): `#throwAsRuntimeException(Exception)`
+* [Exceptions](https://github.com/crykn/guacamole/blob/master/core/src/main/java/de/damios/guacamole/Exceptions.java): `#throwAsRuntimeException(Exception)`, `#getStackTraceAsString(Exception)`
 * [Pair](https://github.com/crykn/guacamole/blob/master/core/src/main/java/de/damios/guacamole/tuple/Pair.java) & [Triple](https://github.com/crykn/guacamole/blob/master/core/src/main/java/de/damios/guacamole/tuple/Triple.java) implementations (immutable)
 * [@Beta](https://github.com/crykn/guacamole/blob/master/core/src/main/java/de/damios/guacamole/annotations/Beta.java): an annotation to denote APIs that may be subject to changes in future releases
 * [@GwtIncompatible](https://github.com/crykn/guacamole/blob/master/core/src/main/java/de/damios/guacamole/annotations/GwtIncompatible.java): indicates that an API is not compatible with GWT and thus shouldn't be compiled for it
