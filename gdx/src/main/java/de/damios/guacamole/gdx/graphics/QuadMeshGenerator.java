@@ -15,11 +15,25 @@
 
 package de.damios.guacamole.gdx.graphics;
 
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.VertexAttribute;
 
 /**
- * Utility methods for generating meshes.
+ * This class contains utility methods for generating {@link Mesh}es.
+ * <p>
+ * A simple example for rendering on a mesh:
+ * 
+ * <pre>
+ * {@code 
+ * texture.bind();
+ * 
+ * shader.bind();
+ * shader.setUniformMatrix("u_projTrans", cam.combined);
+ * 
+ * mesh.render(shader, GL20.GL_TRIANGLE_STRIP);
+ * }
+ * </pre>
  * 
  * @author damios
  */
