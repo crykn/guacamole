@@ -19,9 +19,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
-import com.badlogic.gdx.graphics.glutils.GLFrameBuffer;
 
 import de.damios.guacamole.Preconditions;
 
@@ -53,6 +51,14 @@ public class NestableFrameBuffer extends FrameBuffer {
 	private int[] previousViewport = new int[4];
 	private boolean isActive = false;
 
+	private final boolean hasDepth;
+
+	public NestableFrameBuffer(Pixmap.Format format, int width, int height,
+			boolean hasDepth, boolean hasStencil) {
+		super(format, width, height, hasDepth, hasStencil);
+		this.hasDepth = hasDepth;
+	}
+
 	/**
 	 * Creates a new NestableFrameBuffer having the given dimensions and
 	 * potentially a depth buffer attached.
@@ -70,12 +76,12 @@ public class NestableFrameBuffer extends FrameBuffer {
 	 */
 	public NestableFrameBuffer(Pixmap.Format format, int width, int height,
 			boolean hasDepth) {
-		super(format, width, height, hasDepth, false);
+		this(format, width, height, hasDepth, false);
 	}
 
-	protected NestableFrameBuffer(
-			GLFrameBufferBuilder<? extends GLFrameBuffer<Texture>> bufferBuilder) {
+	protected NestableFrameBuffer(NestableFrameBufferBuilder bufferBuilder) {
 		super(bufferBuilder);
+		this.hasDepth = bufferBuilder.hasDepthRenderBuffer();
 	}
 
 	/**
@@ -158,6 +164,13 @@ public class NestableFrameBuffer extends FrameBuffer {
 	}
 
 	/**
+	 * @return whether this framebuffer was created with a depth buffer
+	 */
+	public boolean hasDepth() {
+		return hasDepth;
+	}
+
+	/**
 	 * A builder for a {@link NestableFrameBuffer}. Useful to add certain
 	 * attachments.
 	 * 
@@ -171,6 +184,10 @@ public class NestableFrameBuffer extends FrameBuffer {
 		@Override
 		public FrameBuffer build() {
 			return new NestableFrameBuffer(this);
+		}
+
+		boolean hasDepthRenderBuffer() {
+			return hasDepthRenderBuffer;
 		}
 	}
 
