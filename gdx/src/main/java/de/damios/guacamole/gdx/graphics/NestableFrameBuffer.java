@@ -49,7 +49,7 @@ public class NestableFrameBuffer extends FrameBuffer {
 
 	private int previousFBOHandle = -1;
 	private int[] previousViewport = new int[4];
-	private boolean isActive = false;
+	private boolean isBound = false;
 
 	private final boolean hasDepth;
 
@@ -90,9 +90,9 @@ public class NestableFrameBuffer extends FrameBuffer {
 	 */
 	@Override
 	public void begin() {
-		Preconditions.checkState(!isActive,
+		Preconditions.checkState(!isBound,
 				"end() has to be called before another draw can begin!");
-		isActive = true;
+		isBound = true;
 
 		previousFBOHandle = GLUtils.getBoundFboHandle();
 		bind();
@@ -143,8 +143,8 @@ public class NestableFrameBuffer extends FrameBuffer {
 	 */
 	@Override
 	public void end(int x, int y, int width, int height) {
-		Preconditions.checkState(isActive, "begin() has to be called first!");
-		isActive = false;
+		Preconditions.checkState(isBound, "begin() has to be called first!");
+		isBound = false;
 
 		if (GLUtils.getBoundFboHandle() != framebufferHandle) {
 			throw new IllegalStateException("The currently bound framebuffer ("
@@ -168,6 +168,10 @@ public class NestableFrameBuffer extends FrameBuffer {
 	 */
 	public boolean hasDepth() {
 		return hasDepth;
+	}
+
+	public boolean isBound() {
+		return isBound;
 	}
 
 	/**
