@@ -5,7 +5,8 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 
 /**
- * A factory for {@link ShaderProgram}s, that supports some convenience options.
+ * A factory for {@link ShaderProgram}s, which supports some convenience
+ * options.
  * 
  * @author damios
  * 
