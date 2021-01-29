@@ -39,87 +39,89 @@ import de.damios.guacamole.gdx.graphics.ShaderProgramFactory;
  */
 public class ShaderCompatibilityHelper {
 
-    private ShaderCompatibilityHelper() {
-        throw new UnsupportedOperationException();
-    }
+	private ShaderCompatibilityHelper() {
+		throw new UnsupportedOperationException();
+	}
 
-    /**
-     * Converts the given GLSL shader code from version 120 to version 150, if
-     * the application is run on macOS and uses OpenGL 3. Ignores any
-     * {@linkplain ShaderProgram#prependVertexCode prepends}.
-     * <p>
-     * This is useful for libraries that – other than real applications – have
-     * to support multiple use cases and therefore have to provide shaders for
-     * versions 120 and 150.
-     * 
-     * @param vert
-     *            the vertex shader code; should not contain a version statement
-     * @param frag
-     *            the fragment shader code; should not contain a version
-     *            statement
-     * @return the compiled shader
-     * @see #toVert150(String)
-     * @see #toFrag150(String)
-     * @see ShaderProgramFactory
-     */
-    public static ShaderProgram fromString(String vert, String frag) {
-        if (ShaderCompatibilityHelper.mustUse32CShader()) {
-            vert = toVert150(vert);
-            frag = toFrag150(frag);
-        }
+	/**
+	 * Converts the given GLSL shader code from version 120 to version 150, if
+	 * the application is run on macOS and uses OpenGL 3. Ignores any
+	 * {@linkplain ShaderProgram#prependVertexCode prepends}.
+	 * <p>
+	 * This is useful for libraries that – other than real applications – have
+	 * to support multiple use cases and therefore have to provide shaders for
+	 * versions 120 and 150.
+	 * 
+	 * @param vert
+	 *            the vertex shader code; should not contain a version statement
+	 * @param frag
+	 *            the fragment shader code; should not contain a version
+	 *            statement
+	 * @return the compiled shader
+	 * @see #toVert150(String)
+	 * @see #toFrag150(String)
+	 * @see ShaderProgramFactory
+	 */
+	public static ShaderProgram fromString(String vert, String frag) {
+		if (ShaderCompatibilityHelper.mustUse32CShader()) {
+			vert = toVert150(vert);
+			frag = toFrag150(frag);
+		}
 
-        return ShaderProgramFactory.fromString(
-                getDefaultShaderVersionStatement() + vert,
-                getDefaultShaderVersionStatement() + frag, true, true);
-    }
+		return ShaderProgramFactory.fromString(
+				getDefaultShaderVersionStatement() + vert,
+				getDefaultShaderVersionStatement() + frag, true, true);
+	}
 
-    public static String toVert150(String vert120) {
-        vert120 = vert120.replace("\nattribute ", "\nin ");
-        vert120 = vert120.replace(" attribute ", " in ");
+	public static String toVert150(String vert120) {
+		vert120 = vert120.replace("\nattribute ", "\nin ");
+		vert120 = vert120.replace(" attribute ", " in ");
 
-        vert120 = vert120.replace("\nvarying ", "\nout ");
-        vert120 = vert120.replace(" varying ", " out ");
+		vert120 = vert120.replace("\nvarying ", "\nout ");
+		vert120 = vert120.replace(" varying ", " out ");
 
-        vert120 = vert120.replace("texture2D(", "texture(");
+		vert120 = vert120.replace("texture2D(", "texture(");
 
-        return vert120;
-    }
+		return vert120;
+	}
 
-    public static String toFrag150(String frag120) {
-        frag120 = frag120.replace("\nattribute ", "\nout ");
-        frag120 = frag120.replace(" attribute ", " out ");
+	public static String toFrag150(String frag120) {
+		frag120 = frag120.replace("\nattribute ", "\nout ");
+		frag120 = frag120.replace(" attribute ", " out ");
 
-        frag120 = frag120.replace("\nvarying ", "\nin ");
-        frag120 = frag120.replace(" varying ", " in ");
+		frag120 = frag120.replace("\nvarying ", "\nin ");
+		frag120 = frag120.replace(" varying ", " in ");
 
-        if (frag120.contains("gl_FragColor")) {
-            frag120 = frag120.replace("void main()",
-                    "out vec4 fragColor; \nvoid main()");
-            frag120 = frag120.replace("gl_FragColor", "fragColor");
-        }
+		if (frag120.contains("gl_FragColor")) {
+			frag120 = frag120.replace("void main()",
+					"out vec4 fragColor; \nvoid main()");
+			frag120 = frag120.replace("gl_FragColor", "fragColor");
+		}
 
-        frag120 = frag120.replace("texture2D(", "texture(");
-        frag120 = frag120.replace("textureCube(", "texture(");
+		frag120 = frag120.replace("texture2D(", "texture(");
+		frag120 = frag120.replace("textureCube(", "texture(");
 
-        return frag120;
-    }
+		return frag120;
+	}
 
-    public static boolean mustUse32CShader() {
-        return Gdx.gl30 != null && UIUtils.isMac;
-    }
+	public static boolean mustUse32CShader() {
+		// TODO use PlatformUtils.isMac (see
+		// https://github.com/libgdx/libgdx/pull/5960)
+		return Gdx.gl30 != null && UIUtils.isMac;
+	}
 
-    public static String getDefaultShaderVersion() {
-        if (mustUse32CShader())
-            return "150"; // macOS 3.2 core profile
+	public static String getDefaultShaderVersion() {
+		if (mustUse32CShader())
+			return "150"; // macOS 3.2 core profile
 
-        if (Gdx.app.getType() == ApplicationType.Desktop
-                || Gdx.app.getType() == ApplicationType.HeadlessDesktop)
-            return "120"; // Desktop
-        return "100"; // GLSL ES (Android, iOS, WebGL)
-    }
+		if (Gdx.app.getType() == ApplicationType.Desktop
+				|| Gdx.app.getType() == ApplicationType.HeadlessDesktop)
+			return "120"; // Desktop
+		return "100"; // GLSL ES (Android, iOS, WebGL)
+	}
 
-    public static String getDefaultShaderVersionStatement() {
-        return "#version " + getDefaultShaderVersion() + "\n";
-    }
+	public static String getDefaultShaderVersionStatement() {
+		return "#version " + getDefaultShaderVersion() + "\n";
+	}
 
 }
