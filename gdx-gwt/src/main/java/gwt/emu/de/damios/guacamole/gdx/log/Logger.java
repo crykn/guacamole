@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package gwt.emu.de.damios.guacamole.gdx.log;
+package de.damios.guacamole.gdx.log;
 
 import java.util.Formatter;
 
