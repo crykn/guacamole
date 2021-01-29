@@ -80,6 +80,8 @@ project(":gdx-gwt") {
 	apply plugin: "java-library"
 	
     dependencies {
+    	implementation project(":gdx")
+    
 		implementation "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion"
 		api "com.github.tommyettinger:formic:$formicVersion"
 		api "com.github.tommyettinger:formic:$formicVersion:sources"
