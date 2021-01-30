@@ -26,8 +26,7 @@ import javax.annotation.Nullable;
  */
 public class Triple<X, Y, Z> extends Pair<X, Y> {
 
-	@Nullable
-	public final Z z;
+	public final @Nullable Z z;
 
 	public Triple(@Nullable X x, @Nullable Y y, @Nullable Z z) {
 		super(x, y);

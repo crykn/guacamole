@@ -26,10 +26,8 @@ import javax.annotation.Nullable;
  */
 public class Pair<X, Y> {
 
-	@Nullable
-	public final X x;
-	@Nullable
-	public final Y y;
+	public final @Nullable X x;
+	public final @Nullable Y y;
 
 	public Pair(@Nullable X x, @Nullable Y y) {
 		this.x = x;
