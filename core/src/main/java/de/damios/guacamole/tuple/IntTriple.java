@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 damios
+ * Copyright 2021 damios
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,23 +20,22 @@ import java.util.Objects;
 import javax.annotation.Nullable;
 
 /**
- * An immutable pair.
+ * An immutable integer value triple.
  * 
  * @author damios
  */
-public class Pair<X, Y> {
+public class IntTriple extends IntPair {
 
-	public final @Nullable X x;
-	public final @Nullable Y y;
+	public final int z;
 
-	public Pair(@Nullable X x, @Nullable Y y) {
-		this.x = x;
-		this.y = y;
+	public IntTriple(int x, int y, int z) {
+		super(x, y);
+		this.z = z;
 	}
 
 	@Override
 	public String toString() {
-		return "Pair{" + x + "," + y + "}";
+		return "IntTriple{" + x + "," + y + "," + z + "}";
 	}
 
 	@Override
@@ -45,22 +44,22 @@ public class Pair<X, Y> {
 			return true;
 		}
 
-		if (!(other instanceof Pair)) {
+		if (!(other instanceof IntTriple)) {
 			return false;
 		}
 
-		Pair<?, ?> other_ = (Pair<?, ?>) other;
+		IntTriple other_ = (IntTriple) other;
+		return x == other_.x && y == other_.y && z == other_.z;
 
-		return Objects.equals(other_.x, this.x)
-				&& Objects.equals(other_.y, this.y);
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((x == null) ? 0 : x.hashCode());
-		result = prime * result + ((y == null) ? 0 : y.hashCode());
+		result = prime * result + x;
+		result = prime * result + y;
+		result = prime * result + z;
 		return result;
 	}
 

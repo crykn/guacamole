@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 damios
+ * Copyright 2021 damios
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,28 +15,24 @@
 
 package de.damios.guacamole.tuple;
 
-import java.util.Objects;
-
-import javax.annotation.Nullable;
-
 /**
- * An immutable pair.
+ * An immutable integer value pair.
  * 
  * @author damios
  */
-public class Pair<X, Y> {
+public class IntPair {
 
-	public final @Nullable X x;
-	public final @Nullable Y y;
+	public final int x;
+	public final int y;
 
-	public Pair(@Nullable X x, @Nullable Y y) {
+	public IntPair(int x, int y) {
 		this.x = x;
 		this.y = y;
 	}
 
 	@Override
 	public String toString() {
-		return "Pair{" + x + "," + y + "}";
+		return "IntPair{" + x + "," + y + "}";
 	}
 
 	@Override
@@ -45,22 +41,20 @@ public class Pair<X, Y> {
 			return true;
 		}
 
-		if (!(other instanceof Pair)) {
+		if (!(other instanceof IntPair)) {
 			return false;
 		}
 
-		Pair<?, ?> other_ = (Pair<?, ?>) other;
-
-		return Objects.equals(other_.x, this.x)
-				&& Objects.equals(other_.y, this.y);
+		IntPair other_ = (IntPair) other;
+		return x == other_.x && y == other_.y;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((x == null) ? 0 : x.hashCode());
-		result = prime * result + ((y == null) ? 0 : y.hashCode());
+		result = prime * result + x;
+		result = prime * result + y;
 		return result;
 	}
 

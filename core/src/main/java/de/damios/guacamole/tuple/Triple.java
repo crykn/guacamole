@@ -48,8 +48,7 @@ public class Triple<X, Y, Z> extends Pair<X, Y> {
 			return false;
 		}
 
-		@SuppressWarnings("unchecked")
-		Triple<X, Y, Z> other_ = (Triple<X, Y, Z>) other;
+		Triple<?, ?, ?> other_ = (Triple<?, ?, ?>) other;
 
 		return Objects.equals(other_.x, this.x)
 				&& Objects.equals(other_.y, this.y)
