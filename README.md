@@ -65,6 +65,7 @@ Module file (_GdxDefinition.gwt.xml_):
    * [Text](https://github.com/crykn/guacamole/blob/master/gdx/src/main/java/de/damios/guacamole/gdx/assets/Text.java) asset type
    * [QuadMeshGenerator](https://github.com/crykn/guacamole/blob/master/gdx/src/main/java/de/damios/guacamole/gdx/graphics/QuadMeshGenerator.java): allows easily creating different quads; is useful when applying shaders
    * [DefaultInputProcessor](https://github.com/crykn/guacamole/blob/master/gdx/src/main/java/de/damios/guacamole/gdx/DefaultInputProcessor.java): an `InputProcessor` providing default methods to reduce boilerplate code; is an interface alternative to `InputAdapter`
+   * [IntVector2](https://github.com/crykn/guacamole/blob/master/gdx/src/main/java/de/damios/guacamole/gdx/math/IntVector2.java): a vector for integer values
    
 ### gdx-desktop
 
