@@ -15,7 +15,6 @@
 
 package de.damios.guacamole.gdx.graphics;
 
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.VertexAttribute;
 
@@ -49,42 +48,33 @@ public final class QuadMeshGenerator {
 	 * @param flipY
 	 * @return a screen filling quad
 	 */
-	public static Mesh createFullScreenQuad(int screenWidth, int screenHeight,
-			boolean flipY) {
+	public static Mesh createFullScreenQuad(int screenWidth, int screenHeight, boolean flipY) {
 		return createQuad(0, 0, screenWidth, screenHeight, flipY);
 	}
 
 	/**
-	 * @param x
-	 *            the bottom left x
-	 * @param y
-	 *            the bottom left y
+	 * @param x      the bottom left x
+	 * @param y      the bottom left y
 	 * @param width
 	 * @param height
 	 * @param flipY
 	 * @return a quad with the given dimensions
 	 */
-	public static Mesh createQuad(float x, float y, float width, float height,
-			boolean flipY) {
+	public static Mesh createQuad(float x, float y, float width, float height, boolean flipY) {
 		return createQuadFromCoordinates(x, y, x + width, y + height, flipY);
 	}
 
 	/**
 	 * Coordinate system: y-up.
 	 * 
-	 * @param x1
-	 *            the left x
-	 * @param y1
-	 *            the bottom y
-	 * @param x2
-	 *            the right x
-	 * @param y2
-	 *            the top y
+	 * @param x1    the left x
+	 * @param y1    the bottom y
+	 * @param x2    the right x
+	 * @param y2    the top y
 	 * @param flipY
 	 * @return a quad with the given coordinates
 	 */
-	public static Mesh createQuadFromCoordinates(float x1, float y1, float x2,
-			float y2, boolean flipY) {
+	public static Mesh createQuadFromCoordinates(float x1, float y1, float x2, float y2, boolean flipY) {
 		float[] verts = new float[20];
 		int i = 0;
 
@@ -116,8 +106,7 @@ public final class QuadMeshGenerator {
 		verts[i++] = 1;
 		verts[i++] = flipY ? 1 : 0;
 
-		Mesh mesh = new Mesh(true, 4, 0, VertexAttribute.Position(),
-				VertexAttribute.TexCoords(0));
+		Mesh mesh = new Mesh(true, 4, 0, VertexAttribute.Position(), VertexAttribute.TexCoords(0));
 
 		mesh.setVertices(verts);
 		return mesh;

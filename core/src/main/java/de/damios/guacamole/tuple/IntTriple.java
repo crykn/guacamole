@@ -15,10 +15,6 @@
 
 package de.damios.guacamole.tuple;
 
-import java.util.Objects;
-
-import javax.annotation.Nullable;
-
 /**
  * An immutable integer value triple.
  * 

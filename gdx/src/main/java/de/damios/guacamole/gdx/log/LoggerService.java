@@ -49,7 +49,7 @@ public class LoggerService {
 	 *            is logged as well.
 	 * @return
 	 */
-	public static Logger getLogger(Class clazz) {
+	public static Logger getLogger(Class<?> clazz) {
 		return getLogger(
 				abbreviateClassNames ? ClassUtils.getAbbreviatedClassName(clazz)
 						: clazz.getName());

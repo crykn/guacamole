@@ -6,10 +6,11 @@ import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.NumberUtils;
 
-public class IntVector2 implements Serializable, Vector<IntVector2> {
+public final class IntVector2 implements Serializable, Vector<IntVector2> {
 
+	private static final long serialVersionUID = 1L;
+	
 	/** The x-component of this vector. **/
 	public int x;
 	/** The y-component of this vector. **/
