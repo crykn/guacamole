@@ -13,12 +13,12 @@ allprojects {
     apply plugin: "eclipse"
     apply plugin: "idea"
 
-    version = "0.3.0"
+    version = "0.3.1"
     
     ext {
         appName = "guacamole"
         formicVersion = "0.1.4"
-        gdxVersion = "1.9.14"
+        gdxVersion = "1.9.15-SNAPSHOT"
         jsrVersion = "3.0.2"
         
         // Test dependencies
