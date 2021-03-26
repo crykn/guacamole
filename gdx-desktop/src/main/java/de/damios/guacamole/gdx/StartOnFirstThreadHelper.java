@@ -16,6 +16,7 @@
 package de.damios.guacamole.gdx;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStreamReader;
 import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
@@ -26,8 +27,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.UIUtils;
 
 /**
  * Adds some utilities to ensure that the JVM was started with the
- * {@code -XstartOnFirstThread} argument, which is required on Mac OS for LWJGL
- * 3 to function.
+ * {@code -XstartOnFirstThread} argument, which is required on macOS for LWJGL 3
+ * to function.
  * 
  * @author damios
  * @see <a href=
@@ -44,7 +45,7 @@ public class StartOnFirstThreadHelper {
 	}
 
 	/**
-	 * Starts a new JVM if the application was started on Mac OS without the
+	 * Starts a new JVM if the application was started on macOS without the
 	 * {@code -XstartOnFirstThread} argument. Returns whether a new JVM was started
 	 * and thus no code should be executed.
 	 * <p>
@@ -59,10 +60,9 @@ public class StartOnFirstThreadHelper {
 	 * }
 	 * </pre>
 	 * 
-	 * @param redirectOutput
-	 *            whether the output of the new JVM should be rerouted to the new
-	 *            JVM, so it can be accessed in the same place; keeps the old JVM
-	 *            running if enabled
+	 * @param redirectOutput whether the output of the new JVM should be rerouted to
+	 *                       the new JVM, so it can be accessed in the same place;
+	 *                       keeps the old JVM running if enabled
 	 * @return whether a new JVM was started and thus no code should be executed in
 	 *         this one
 	 */
@@ -82,14 +82,21 @@ public class StartOnFirstThreadHelper {
 		// avoids looping, but most certainly leads to a crash
 		if ("true".equals(System.getProperty(JVM_RESTARTED_ARG))) {
 			System.err.println(
-					"There was a problem evaluating whether the JVM was started with the -XstartOnFirstThread argument");
+					"There was a problem evaluating whether the JVM was started with the -XstartOnFirstThread argument.");
 			return false;
 		}
 
 		// Restart the JVM with -XstartOnFirstThread
 		ArrayList<String> jvmArgs = new ArrayList<String>();
 		String separator = System.getProperty("file.separator");
-		jvmArgs.add(System.getProperty("java.home") + separator + "bin" + separator + "java");
+		// TODO Java 14: ProcessHandle.current().info().command();
+		String javaExecPath = System.getProperty("java.home") + separator + "bin" + separator + "java";
+		if (!(new File(javaExecPath)).exists()) {
+			System.err.println(
+					"A Java installation could not be found. If you are distributing this app with a bundled JRE, be sure to set the -XstartOnFirstThread argument manually!");
+			return false;
+		}
+		jvmArgs.add(javaExecPath);
 		jvmArgs.add("-XstartOnFirstThread");
 		jvmArgs.add("-D" + JVM_RESTARTED_ARG + "=true");
 		jvmArgs.addAll(ManagementFactory.getRuntimeMXBean().getInputArguments());
@@ -121,7 +128,7 @@ public class StartOnFirstThreadHelper {
 	}
 
 	/**
-	 * Starts a new JVM if the application was started on Mac OS without the
+	 * Starts a new JVM if the application was started on macOS without the
 	 * {@code -XstartOnFirstThread} argument. Returns whether a new JVM was started
 	 * and thus no code should be executed. Redirects the output of the new JVM to
 	 * the old one.
