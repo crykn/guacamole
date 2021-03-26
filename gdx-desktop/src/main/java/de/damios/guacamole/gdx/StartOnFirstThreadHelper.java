@@ -89,7 +89,7 @@ public class StartOnFirstThreadHelper {
 		// Restart the JVM with -XstartOnFirstThread
 		ArrayList<String> jvmArgs = new ArrayList<String>();
 		String separator = System.getProperty("file.separator");
-		// TODO Java 14: ProcessHandle.current().info().command();
+		// TODO Java 9: ProcessHandle.current().info().command();
 		String javaExecPath = System.getProperty("java.home") + separator + "bin" + separator + "java";
 		if (!(new File(javaExecPath)).exists()) {
 			System.err.println(
