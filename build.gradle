@@ -18,7 +18,7 @@ allprojects {
     ext {
         appName = "guacamole"
         formicVersion = "0.1.4"
-        gdxVersion = "1.9.15-SNAPSHOT"
+        gdxVersion = "1.10.0"
         jsrVersion = "3.0.2"
         
         // Test dependencies
