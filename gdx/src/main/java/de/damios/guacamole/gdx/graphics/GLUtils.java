@@ -37,7 +37,7 @@ public final class GLUtils {
 	 * The buffer used internally. A size of 64 bytes is required as at most 16
 	 * integer elements can be returned.
 	 */
-	private static final IntBuffer USED_INT_BUFF = ByteBuffer
+	private static final IntBuffer INT_BUFF = ByteBuffer
 			.allocateDirect(16 * Integer.BYTES).order(ByteOrder.nativeOrder())
 			.asIntBuffer();
 
@@ -49,7 +49,7 @@ public final class GLUtils {
 	 *         {@code 0}, indicating the default framebuffer
 	 */
 	public static synchronized int getBoundFboHandle() {
-		IntBuffer intBuf = USED_INT_BUFF;
+		IntBuffer intBuf = INT_BUFF;
 		Gdx.gl.glGetIntegerv(GL20.GL_FRAMEBUFFER_BINDING, intBuf);
 		return intBuf.get(0);
 	}
@@ -60,7 +60,7 @@ public final class GLUtils {
 	 *         viewport, followed by its width and height.
 	 */
 	public static synchronized int[] getViewport() {
-		IntBuffer intBuf = USED_INT_BUFF;
+		IntBuffer intBuf = INT_BUFF;
 		Gdx.gl.glGetIntegerv(GL20.GL_VIEWPORT, intBuf);
 
 		return new int[] { intBuf.get(0), intBuf.get(1), intBuf.get(2),

@@ -23,8 +23,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.UIUtils;
 import de.damios.guacamole.gdx.graphics.ShaderProgramFactory;
 
 /**
- * This class allows to programmatically port GLSL shader code from version 120
- * (= OpenGL 2.1) to version 150 (= OpenGL 3.2).
+ * This class allows programmatically porting GLSL shader code from version 120
+ * (~ OpenGL 2.1) to version 150 (~ OpenGL 3.2).
  * <p>
  * This is useful for libraries that have to support OpenGL ES 2 and 3 at the
  * same time. The need for 150 shaders arises due to macOS only providing a 3.2

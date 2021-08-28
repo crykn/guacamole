@@ -24,7 +24,7 @@ import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import de.damios.guacamole.Preconditions;
 
 /**
- * An implementation of the libGDX {@link FrameBuffer} that supports nested
+ * An implementation of libGDX's {@link FrameBuffer} that supports nested
  * framebuffers. This allows using multiple framebuffers inside each other:
  * 
  * <pre>

@@ -27,10 +27,13 @@ import de.damios.guacamole.ClassUtils;
  * This class is used to {@link #getLogger(Class) obtain} and configure
  * {@link Logger}s.
  * <p>
- * Loggers have the following advantages: they offer simple to use
- * {@linkplain String#format(String, Object...) formatting} support, and the
- * (abbreviated) name of the class from wherein the logger was called is
- * printed.
+ * Loggers have the following advantages:
+ * <ul>
+ * <li>they offer simple to use {@linkplain String#format(String, Object...)
+ * formatting} support</li>
+ * <li>the ({@linkplain #setUseAbbreviatedClassNames(boolean) abbreviated}) name
+ * of the class from wherein the logger was called is printed</li>
+ * </ul>
  */
 public class LoggerService {
 
@@ -88,7 +91,7 @@ public class LoggerService {
 	}
 
 	/**
-	 * Enables all log messages.
+	 * Enables all log messages, i.e. error, info, and debug ones.
 	 */
 	public static void showAll() {
 		Gdx.app.setLogLevel(Application.LOG_DEBUG);
@@ -116,7 +119,13 @@ public class LoggerService {
 	}
 
 	/**
-	 * Determines whether to abbreviate class names when logging.
+	 * Determines whether newly obtained loggers should abbreviate their class
+	 * names. E.g.:
+	 * 
+	 * <pre>
+	* [ERROR] [c.b.g.m.MyGdxGame]: something went wrong!
+	* [ERROR] [com.badlogic.gdx.mygame.MyGdxGame]: something went wrong!
+	 * </pre>
 	 * 
 	 * @param abbreviateClassNames
 	 */
