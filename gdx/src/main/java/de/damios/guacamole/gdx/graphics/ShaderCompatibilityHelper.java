@@ -28,9 +28,9 @@ import de.damios.guacamole.gdx.graphics.ShaderProgramFactory;
  * <p>
  * This is useful for libraries that have to support OpenGL ES 2 and 3 at the
  * same time. The need for 150 shaders arises due to macOS only providing a 3.2
- * <i>core<i> profile, which is not backward compatible. This means that – other
- * than on Windows or Linux – if one is using OpenGL 3+ on macOS, only shaders
- * of version 150 can be compiled.
+ * <i>core</i> profile, which is not backward compatible. This means that –
+ * other than on Windows or Linux – if one is using OpenGL 3+ on macOS, only
+ * shaders of version 150 can be compiled.
  * 
  * @author damios
  * @see <a href=
