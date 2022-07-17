@@ -46,8 +46,8 @@ public class StartOnFirstThreadHelper {
 
 	/**
 	 * Starts a new JVM if the application was started on macOS without the
-	 * {@code -XstartOnFirstThread} argument. Returns whether a new JVM was started
-	 * and thus no code should be executed.
+	 * {@code -XstartOnFirstThread} argument. Returns whether a new JVM was
+	 * started and thus no code should be executed.
 	 * <p>
 	 * <u>Usage:</u>
 	 * 
@@ -60,11 +60,12 @@ public class StartOnFirstThreadHelper {
 	 * }
 	 * </pre>
 	 * 
-	 * @param redirectOutput whether the output of the new JVM should be rerouted to
-	 *                       the new JVM, so it can be accessed in the same place;
-	 *                       keeps the old JVM running if enabled
-	 * @return whether a new JVM was started and thus no code should be executed in
-	 *         this one
+	 * @param redirectOutput
+	 *            whether the output of the new JVM should be rerouted to the
+	 *            new JVM, so it can be accessed in the same place; keeps the
+	 *            old JVM running if enabled
+	 * @return whether a new JVM was started and thus no code should be executed
+	 *         in this one
 	 */
 	public static boolean startNewJvmIfRequired(boolean redirectOutput) {
 		if (!UIUtils.isMac) {
@@ -90,7 +91,8 @@ public class StartOnFirstThreadHelper {
 		ArrayList<String> jvmArgs = new ArrayList<String>();
 		String separator = System.getProperty("file.separator");
 		// TODO Java 9: ProcessHandle.current().info().command();
-		String javaExecPath = System.getProperty("java.home") + separator + "bin" + separator + "java";
+		String javaExecPath = System.getProperty("java.home") + separator
+				+ "bin" + separator + "java";
 		if (!(new File(javaExecPath)).exists()) {
 			System.err.println(
 					"A Java installation could not be found. If you are distributing this app with a bundled JRE, be sure to set the -XstartOnFirstThread argument manually!");
@@ -99,18 +101,31 @@ public class StartOnFirstThreadHelper {
 		jvmArgs.add(javaExecPath);
 		jvmArgs.add("-XstartOnFirstThread");
 		jvmArgs.add("-D" + JVM_RESTARTED_ARG + "=true");
-		jvmArgs.addAll(ManagementFactory.getRuntimeMXBean().getInputArguments());
+		jvmArgs.addAll(
+				ManagementFactory.getRuntimeMXBean().getInputArguments());
 		jvmArgs.add("-cp");
 		jvmArgs.add(System.getProperty("java.class.path"));
-		jvmArgs.add(System.getenv("JAVA_MAIN_CLASS_" + pid));
+		String mainClass = System.getenv("JAVA_MAIN_CLASS_" + pid);
+		if (mainClass == null) {
+			StackTraceElement trace[] = Thread.currentThread().getStackTrace();
+			if (trace.length > 0) {
+				mainClass = trace[trace.length - 1].getClassName();
+			} else {
+				System.err.println("The main class could not be determined.");
+				return false;
+			}
+		}
+		jvmArgs.add(mainClass);
 
 		try {
 			if (!redirectOutput) {
 				ProcessBuilder processBuilder = new ProcessBuilder(jvmArgs);
 				processBuilder.start();
 			} else {
-				Process process = (new ProcessBuilder(jvmArgs)).redirectErrorStream(true).start();
-				BufferedReader processOutput = new BufferedReader(new InputStreamReader(process.getInputStream()));
+				Process process = (new ProcessBuilder(jvmArgs))
+						.redirectErrorStream(true).start();
+				BufferedReader processOutput = new BufferedReader(
+						new InputStreamReader(process.getInputStream()));
 				String line;
 
 				while ((line = processOutput.readLine()) != null) {
@@ -129,9 +144,9 @@ public class StartOnFirstThreadHelper {
 
 	/**
 	 * Starts a new JVM if the application was started on macOS without the
-	 * {@code -XstartOnFirstThread} argument. Returns whether a new JVM was started
-	 * and thus no code should be executed. Redirects the output of the new JVM to
-	 * the old one.
+	 * {@code -XstartOnFirstThread} argument. Returns whether a new JVM was
+	 * started and thus no code should be executed. Redirects the output of the
+	 * new JVM to the old one.
 	 * <p>
 	 * <u>Usage:</u>
 	 * 
@@ -144,17 +159,17 @@ public class StartOnFirstThreadHelper {
 	 * }
 	 * </pre>
 	 * 
-	 * @return whether a new JVM was started and thus no code should be executed in
-	 *         this one
+	 * @return whether a new JVM was started and thus no code should be executed
+	 *         in this one
 	 */
 	public static boolean startNewJvmIfRequired() {
 		return startNewJvmIfRequired(true);
 	}
 
 	/**
-	 * Starts a new JVM if required; otherwise executes the main method code given
-	 * as Runnable. When used with lambdas, this is allows for less verbose code
-	 * than {@link #startNewJvmIfRequired()}:
+	 * Starts a new JVM if required; otherwise executes the main method code
+	 * given as Runnable. When used with lambdas, this is allows for less
+	 * verbose code than {@link #startNewJvmIfRequired()}:
 	 * 
 	 * <pre>
 	 * public static void main(String... args) {
