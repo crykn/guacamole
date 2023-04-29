@@ -49,8 +49,9 @@ project(":gdx") {
 	
     dependencies {
     	api project(":core")
+        api "com.github.tommyettinger:formic:$formicVersion"
         implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
-       
+        
         testImplementation "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
         testImplementation "org.mockito:mockito-core:$mockitoVersion"
         testImplementation "com.badlogicgames.gdx:gdx:$gdxVersion"
@@ -81,9 +82,7 @@ project(":gdx-gwt") {
 	
     dependencies {
     	implementation project(":gdx")
-    
 		implementation "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion"
-		api "com.github.tommyettinger:formic:$formicVersion"
 		api "com.github.tommyettinger:formic:$formicVersion:sources"
     }
 }

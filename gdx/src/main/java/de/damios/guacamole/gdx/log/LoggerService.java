@@ -22,6 +22,7 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 
 import de.damios.guacamole.ClassUtils;
+import text.formic.Stringf;
 
 /**
  * This class is used to {@link #getLogger(Class) obtain} and configure
@@ -31,14 +32,17 @@ import de.damios.guacamole.ClassUtils;
  * <ul>
  * <li>they offer simple to use {@linkplain String#format(String, Object...)
  * formatting} support</li>
- * <li>the ({@linkplain #setUseAbbreviatedClassNames(boolean) abbreviated}) name
- * of the class from wherein the logger was called is printed</li>
+ * <li>the ({@linkplain #setUseAbbreviatedClassNames(boolean) abbreviated} and
+ * {@linkplain #setPadClassNames(boolean) padded}) name of the class from
+ * wherein the logger was called is printed</li>
  * </ul>
  */
 public class LoggerService {
 
 	private final static Map<String, Logger> loggers = new HashMap<>();
 	private static boolean abbreviateClassNames = true;
+	private static int minClassNameLength = 34;
+	private static int maxClassNameLength = 34;
 
 	private LoggerService() {
 		throw new UnsupportedOperationException();
@@ -53,9 +57,17 @@ public class LoggerService {
 	 * @return
 	 */
 	public static Logger getLogger(Class<?> clazz) {
-		return getLogger(
-				abbreviateClassNames ? ClassUtils.getAbbreviatedClassName(clazz)
-						: clazz.getName());
+		String className = abbreviateClassNames
+				? ClassUtils.getAbbreviatedClassName(clazz)
+				: clazz.getName();
+
+		if (maxClassNameLength > 0) {
+			className = Stringf.format(
+					"%-" + minClassNameLength + "." + maxClassNameLength + "s",
+					className);
+		}
+
+		return getLogger(className);
 	}
 
 	private static Logger getLogger(String name) {
@@ -132,6 +144,25 @@ public class LoggerService {
 	public static void setUseAbbreviatedClassNames(
 			boolean abbreviateClassNames) {
 		LoggerService.abbreviateClassNames = abbreviateClassNames;
+	}
+
+	/**
+	 * Determines whether newly obtained loggers should pad their class names.
+	 * E.g.:
+	 * 
+	 * <pre>
+	* [ERROR] [c.b.g.m.MyGdxGame]: something went wrong!
+	* [ERROR] [c.b.g.m.MyGdxGame       ]: something went wrong!
+	* [ERROR] [c.b.g.m.i.MyInputProcess]: something went wrong!
+	 * </pre>
+	 * 
+	 * @param minClassNameLength
+	 * @param maxClassNameLength
+	 */
+	public static void setPadClassNames(int minClassNameLength,
+			int maxClassNameLength) {
+		LoggerService.minClassNameLength = minClassNameLength;
+		LoggerService.maxClassNameLength = maxClassNameLength;
 	}
 
 }
