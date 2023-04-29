@@ -61,7 +61,7 @@ public class LoggerService {
 				? ClassUtils.getAbbreviatedClassName(clazz)
 				: clazz.getName();
 
-		if (maxClassNameLength > 0) {
+		if (minClassNameLength > 0 || maxClassNameLength > 0) {
 			className = Stringf.format(
 					"%-" + minClassNameLength + "." + maxClassNameLength + "s",
 					className);
