@@ -156,6 +156,8 @@ public class LoggerService {
 	* [ERROR] [c.b.g.m.i.MyInputProcess]: something went wrong!
 	 * </pre>
 	 * 
+	 * Set both parameters to {@code 0} to disable padding.
+	 * 
 	 * @param minClassNameLength
 	 * @param maxClassNameLength
 	 */
