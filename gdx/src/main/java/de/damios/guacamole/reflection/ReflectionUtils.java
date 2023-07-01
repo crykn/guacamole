@@ -76,7 +76,7 @@ public class ReflectionUtils {
 	 * @param method
 	 * @return the hashcode for the methods first parameter
 	 */
-	public int computeParameterHashCode(Method method) {
+	public static int computeParameterHashCode(Method method) {
 		Class<?> parameterClass = method.getParameterTypes()[0];
 		return parameterClass.getName().hashCode();
 	}
