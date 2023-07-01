@@ -15,6 +15,10 @@
 
 package de.damios.guacamole.reflection;
 
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 import javax.annotation.Nullable;
 
 import com.badlogic.gdx.utils.reflect.ClassReflection;
@@ -74,11 +78,38 @@ public class ReflectionUtils {
 
 	/**
 	 * @param method
-	 * @return the hashcode for the methods first parameter
+	 * @return the {@linkplain Object#hashCode() hash code} for the method's
+	 *         first parameter
 	 */
 	public static int computeParameterHashCode(Method method) {
 		Class<?> parameterClass = method.getParameterTypes()[0];
 		return parameterClass.getName().hashCode();
+	}
+
+	/**
+	 * Finds all super classes and interfaces for the given class.
+	 *
+	 * @param clazz
+	 *            the event class
+	 * @return a list of subscriber methods
+	 */
+	public static Set<Class<?>> retrieveAllSuperTypes(Class<?> clazz) {
+		Set<Class<?>> allSuperTypes = new LinkedHashSet<>();
+		while (clazz != null) {
+			allSuperTypes.add(clazz);
+			try {
+				for (Class<?> interfaceType : ClassReflection
+						.getInterfaces(clazz)) {
+					allSuperTypes.addAll(retrieveAllSuperTypes(interfaceType));
+				}
+			} catch (RuntimeException e) {
+				if (LoggerService.isInfoEnabled())
+					LOG.info("Cannot retrieve the types of '" + clazz
+							+ "'. Skipping it for now.");
+			}
+			clazz = clazz.getSuperclass();
+		}
+		return Collections.unmodifiableSet(allSuperTypes);
 	}
 
 }
