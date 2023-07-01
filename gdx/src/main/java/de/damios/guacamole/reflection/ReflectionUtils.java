@@ -32,6 +32,7 @@ import com.badlogic.gdx.utils.reflect.FieldConverter;
 import com.badlogic.gdx.utils.reflect.Method;
 import com.badlogic.gdx.utils.reflect.ReflectionException;
 
+import de.damios.guacamole.Preconditions;
 import de.damios.guacamole.gdx.log.Logger;
 import de.damios.guacamole.gdx.log.LoggerService;
 
@@ -83,8 +84,7 @@ public class ReflectionUtils {
 
 	/**
 	 * @param method
-	 * @return the {@linkplain Object#hashCode() hash code} for the method's
-	 *         first parameter
+	 * @return the hash code for the class name of the method's first parameter
 	 */
 	public static int computeParameterHashCode(Method method) {
 		Class<?> parameterClass = method.getParameterTypes()[0];
@@ -132,7 +132,7 @@ public class ReflectionUtils {
 
 	public static Iterable<Method> findAnnotatedMethods(
 			Class<? extends Annotation> annotationClass, Class<?> clazz,
-			Predicate<Method> predicate) {
+			@Nullable Predicate<Method> predicate) {
 		Map<Integer, Method> subscribingMethods = new HashMap<>();
 		Set<Class<?>> allSuperTypes = retrieveAllSuperTypes(clazz);
 		for (Class<?> type : allSuperTypes) {
@@ -149,6 +149,29 @@ public class ReflectionUtils {
 			}
 		}
 		return Collections.unmodifiableCollection(subscribingMethods.values());
+	}
+
+	public static boolean isMethodEqual(Method m1, Method m2) {
+		// libGDX's Method class doesn't implement an equals() method
+		Preconditions.checkNotNull(m1);
+		Preconditions.checkNotNull(m2);
+
+		if ((m1.getDeclaringClass() == m2.getDeclaringClass())
+				&& (m1.getName() == m2.getName())) {
+			if (!m1.getReturnType().equals(m2.getReturnType()))
+				return false;
+			/* Avoid unnecessary cloning */
+			Class<?>[] params1 = m1.getParameterTypes();
+			Class<?>[] params2 = m2.getParameterTypes();
+			if (params1.length == params2.length) {
+				for (int i = 0; i < params1.length; i++) {
+					if (params1[i] != params2[i])
+						return false;
+				}
+				return true;
+			}
+		}
+		return false;
 	}
 
 }
