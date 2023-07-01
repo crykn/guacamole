@@ -21,7 +21,7 @@ import java.io.StringWriter;
 import de.damios.guacamole.annotations.GwtIncompatible;
 
 /**
- * Static methods to help dealing with exceptions.
+ * Static methods for dealing with exceptions.
  * 
  * @author damios
  */
@@ -40,8 +40,8 @@ public final class Exceptions {
 	}
 
 	/**
-	 * Returns a string containing the result of {@link Exception#printStackTrace()
-	 * toString()}.
+	 * Returns a string containing the result of
+	 * {@link Exception#printStackTrace() toString()}.
 	 */
 	@GwtIncompatible // java.io.PrintWriter, java.io.StringWriter
 	public static String getStackTraceAsString(Exception e) {
