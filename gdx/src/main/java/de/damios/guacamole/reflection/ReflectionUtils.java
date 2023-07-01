@@ -15,9 +15,14 @@
 
 package de.damios.guacamole.reflection;
 
+import java.lang.annotation.Annotation;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
+import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
 
@@ -110,6 +115,40 @@ public class ReflectionUtils {
 			clazz = clazz.getSuperclass();
 		}
 		return Collections.unmodifiableSet(allSuperTypes);
+	}
+
+	/**
+	 * Finds all methods within {@code clazz} and its super types annotated with
+	 * {@code annotationClass}.
+	 * 
+	 * @param annotationClass
+	 * @param clazz
+	 * @return
+	 */
+	public static Iterable<Method> findAnnotatedMethods(
+			Class<? extends Annotation> annotationClass, Class<?> clazz) {
+		return findAnnotatedMethods(annotationClass, clazz, null);
+	}
+
+	public static Iterable<Method> findAnnotatedMethods(
+			Class<? extends Annotation> annotationClass, Class<?> clazz,
+			Predicate<Method> predicate) {
+		Map<Integer, Method> subscribingMethods = new HashMap<>();
+		Set<Class<?>> allSuperTypes = retrieveAllSuperTypes(clazz);
+		for (Class<?> type : allSuperTypes) {
+			for (Method method : ClassReflection.getDeclaredMethods(type)) {
+				if (method.isAnnotationPresent(annotationClass)) {
+					if (predicate == null || predicate.test(method)) {
+						int hashCode = Objects.hash(method.getName(),
+								method.getParameterTypes());
+						if (!subscribingMethods.containsKey(hashCode)) {
+							subscribingMethods.put(hashCode, method);
+						}
+					}
+				}
+			}
+		}
+		return Collections.unmodifiableCollection(subscribingMethods.values());
 	}
 
 }
