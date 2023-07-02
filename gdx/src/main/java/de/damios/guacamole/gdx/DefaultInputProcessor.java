@@ -74,6 +74,15 @@ public interface DefaultInputProcessor extends InputProcessor {
 	 * {@inheritDoc}
 	 */
 	@Override
+	public default boolean touchCancelled(int screenX, int screenY, int pointer,
+			int button) {
+		return false;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public default boolean touchDragged(int screenX, int screenY, int pointer) {
 		return false;
 	}
