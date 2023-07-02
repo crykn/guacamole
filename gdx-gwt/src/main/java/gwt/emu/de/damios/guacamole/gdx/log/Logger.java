@@ -17,18 +17,20 @@ package de.damios.guacamole.gdx.log;
 
 import java.util.Formatter;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 
 import de.damios.guacamole.gdx.log.LoggerService;
 import text.formic.Stringf;
 
 /**
- * A logger for libGDX. Can be obtained via
- * {@link LoggerService#getLogger(Class)}. Adds support for formatting
- * ({@link String#format(String, Object...)}).
+ * A logger for libGDX that wraps calls to
+ * {@link Application#log(String, String) Gdx.app.log(String, String)} etc. Can
+ * be obtained via {@link LoggerService#getLogger(Class)}.
  * <p>
- * For example: calling {@code logger.error("something went %s!", "wrong")}
- * leads to the following output:
+ * Adds support for formatting ({@link String#format(String, Object...)}). For
+ * example, calling {@code logger.error("something went %s!", "wrong")} would
+ * lead to the following output:
  * 
  * <pre>
  * [ERROR] [c.b.g.m.MyGdxGame]: something went wrong!
