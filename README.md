@@ -13,7 +13,7 @@ dependencies {
 ```
 
 * [@Beta](https://github.com/crykn/guacamole/blob/master/core/src/main/java/de/damios/guacamole/annotations/Beta.java): an annotation to denote APIs that may be subject to changes in future releases
-* [BooleanConsumer](https://github.com/crykn/guacamole/blob/master/core/src/main/java/de/damios/guacamole/func/BooleanConsumer.java), [ICallback](https://github.com/crykn/guacamole/blob/master/core/src/main/java/de/damios/guacamole/ICallback.java)
+* [BooleanConsumer](https://github.com/crykn/guacamole/blob/master/core/src/main/java/de/damios/guacamole/func/BooleanConsumer.java), [FloatConsumer](https://github.com/crykn/guacamole/blob/master/core/src/main/java/de/damios/guacamole/func/FloatConsumer.java), [ShortConsumer](https://github.com/crykn/guacamole/blob/master/core/src/main/java/de/damios/guacamole/func/ShortConsumer.java) [ICallback](https://github.com/crykn/guacamole/blob/master/core/src/main/java/de/damios/guacamole/ICallback.java)
 * [ClassUtils](https://github.com/crykn/guacamole/blob/master/core/src/main/java/de/damios/guacamole/ClassUtils.java): contains utilities for dealing with classes
 * [ConcatenatedIterator](https://github.com/crykn/guacamole/blob/master/gdx/src/main/java/de/damios/guacamole/ConcatenatedIterator.java): this class aggregates multiple iterators into one
 * [DaemonThreadFactory](https://github.com/crykn/guacamole/blob/master/core/src/main/java/de/damios/guacamole/concurrent/DaemonThreadFactory.java): a `ThreadFactory` creating daemon threads

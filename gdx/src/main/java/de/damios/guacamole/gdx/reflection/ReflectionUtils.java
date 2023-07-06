@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package de.damios.guacamole.reflection;
+package de.damios.guacamole.gdx.reflection;
 
 import java.lang.annotation.Annotation;
 import java.util.Collections;
@@ -71,24 +71,45 @@ public class ReflectionUtils {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public static @Nullable <T> T newInstance(String className,
+	public static @Nullable <T> T newInstanceOrNull(String className,
 			Class<T> clazz) {
+		return newInstanceOrDefault(className, clazz, null);
+	}
+
+	/**
+	 * Creates a class via libGDX reflection by using its name. Returns
+	 * {@code defaultValue} if the reflection or instantiation fails.
+	 * 
+	 * @param <T>
+	 * @param className
+	 * @param clazz
+	 * @param defaultValue
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public static @Nullable <T> T newInstanceOrDefault(String className,
+			Class<T> clazz, T defaultValue) {
 		try {
 			return (T) ClassReflection
 					.newInstance(ClassReflection.forName(className));
 		} catch (ReflectionException e) {
 			LOG.debug(e.getLocalizedMessage());
-			return null;
+			return defaultValue;
 		}
 	}
 
 	/**
 	 * @param method
-	 * @return the hash code for the class name of the method's first parameter
+	 * @return the hash code for the class name of the method first parameters
 	 */
 	public static int computeParameterHashCode(Method method) {
-		Class<?> parameterClass = method.getParameterTypes()[0];
-		return parameterClass.getName().hashCode();
+		int hash = 7;
+
+		for (Class c : method.getParameterTypes()) {
+			hash = 29 * hash + c.getName().hashCode();
+		}
+
+		return hash;
 	}
 
 	/**
@@ -151,7 +172,7 @@ public class ReflectionUtils {
 		return Collections.unmodifiableCollection(subscribingMethods.values());
 	}
 
-	public static boolean isMethodEqual(Method m1, Method m2) {
+	public static boolean areMethodsEqual(Method m1, Method m2) {
 		// libGDX's Method class doesn't implement an equals() method
 		Preconditions.checkNotNull(m1);
 		Preconditions.checkNotNull(m2);
