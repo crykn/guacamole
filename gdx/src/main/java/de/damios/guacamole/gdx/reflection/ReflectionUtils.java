@@ -99,20 +99,6 @@ public class ReflectionUtils {
 	}
 
 	/**
-	 * @param method
-	 * @return the hash code for the class name of the method first parameters
-	 */
-	public static int computeParameterHashCode(Method method) {
-		int hash = 7;
-
-		for (Class c : method.getParameterTypes()) {
-			hash = 29 * hash + c.getName().hashCode();
-		}
-
-		return hash;
-	}
-
-	/**
 	 * Finds all super classes and interfaces for the given class.
 	 *
 	 * @param clazz
