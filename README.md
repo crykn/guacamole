@@ -19,10 +19,12 @@ dependencies {
 * [DaemonThreadFactory](https://github.com/crykn/guacamole/blob/master/core/src/main/java/de/damios/guacamole/concurrent/DaemonThreadFactory.java): a `ThreadFactory` creating daemon threads
 * [Exceptions](https://github.com/crykn/guacamole/blob/master/core/src/main/java/de/damios/guacamole/Exceptions.java): `#throwAsRuntimeException(Exception)`, `#getStackTraceAsString(Exception)`
 * [@GwtIncompatible](https://github.com/crykn/guacamole/blob/master/core/src/main/java/de/damios/guacamole/annotations/GwtIncompatible.java): indicates that an API is not compatible with GWT and thus shouldn't be compiled for it
+* [IntRange](https://github.com/crykn/guacamole/blob/master/core/src/main/java/de/damios/guacamole/ClassUtils.java)
 * [MoreObjects](https://github.com/crykn/guacamole/blob/master/core/src/main/java/de/damios/guacamole/MoreObjects.java): contains helper functions for dealing with objects which are not already included in Java's `Objects` class
 * [@Nullable](https://jcp.org/en/jsr/detail?id=305#2): the `@Nullable` annotation from JSR 305 is provided as a transitive dependency 
 * [Pair](https://github.com/crykn/guacamole/blob/master/core/src/main/java/de/damios/guacamole/tuple/Pair.java), [Triple](https://github.com/crykn/guacamole/blob/master/core/src/main/java/de/damios/guacamole/tuple/Triple.java), [IntPair](https://github.com/crykn/guacamole/blob/master/core/src/main/java/de/damios/guacamole/tuple/IntPair.java) & [IntTriple](https://github.com/crykn/guacamole/blob/master/core/src/main/java/de/damios/guacamole/tuple/IntTriple.java) implementations (immutable)
 * [Preconditions](https://github.com/crykn/guacamole/blob/master/core/src/main/java/de/damios/guacamole/Preconditions.java): has methods like `#checkArgument(boolean, String)`, `#checkState(boolean, String)` & `#checkNotNull(Object, String)`; is slimmer than the commonly known class from [guava](https://github.com/google/guava/wiki/PreconditionsExplained)
+* [StopWatch](https://github.com/crykn/guacamole/blob/master/core/src/main/java/de/damios/guacamole/StopWatch.java)
 * [ThreadHandler](https://github.com/crykn/guacamole/blob/master/core/src/main/java/de/damios/guacamole/concurrent/ThreadHandler.java): a class to easily offload simple, time-consuming tasks onto threads
 
 <br/>
