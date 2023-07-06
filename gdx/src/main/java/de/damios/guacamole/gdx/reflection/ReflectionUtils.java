@@ -27,6 +27,7 @@ import java.util.function.Predicate;
 import javax.annotation.Nullable;
 
 import com.badlogic.gdx.utils.reflect.ClassReflection;
+import com.badlogic.gdx.utils.reflect.Constructor;
 import com.badlogic.gdx.utils.reflect.Field;
 import com.badlogic.gdx.utils.reflect.FieldConverter;
 import com.badlogic.gdx.utils.reflect.Method;
@@ -73,7 +74,13 @@ public class ReflectionUtils {
 	@SuppressWarnings("unchecked")
 	public static @Nullable <T> T newInstanceOrNull(String className,
 			Class<T> clazz) {
-		return newInstanceOrDefault(className, clazz, null);
+		try {
+			return (T) ClassReflection
+					.newInstance(ClassReflection.forName(className));
+		} catch (ReflectionException e) {
+			LOG.debug(e.getLocalizedMessage());
+			return null;
+		}
 	}
 
 	/**
@@ -83,18 +90,23 @@ public class ReflectionUtils {
 	 * @param <T>
 	 * @param className
 	 * @param clazz
-	 * @param defaultValue
+	 * @param parameterTypes
+	 *            an array of the constructor's parameter types
+	 * @param args
+	 *            the objects that should be handed to the constructor
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public static @Nullable <T> T newInstanceOrDefault(String className,
-			Class<T> clazz, T defaultValue) {
+	public static @Nullable <T> T newInstanceWithParamsOrNull(String className,
+			Class<T> clazz, Class[] parameterTypes, Object[] args) {
 		try {
-			return (T) ClassReflection
-					.newInstance(ClassReflection.forName(className));
+			Class<T> c = ClassReflection.forName(className);
+			Constructor constructor = ClassReflection.getConstructor(c,
+					parameterTypes);
+			return (T) constructor.newInstance(args);
 		} catch (ReflectionException e) {
 			LOG.debug(e.getLocalizedMessage());
-			return defaultValue;
+			return null;
 		}
 	}
 
