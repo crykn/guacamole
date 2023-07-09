@@ -56,6 +56,12 @@ public class IntRange implements IntPredicate {
 		return upperBound;
 	}
 
+	@Override
+	public String toString() {
+		return "IntRange{lowerBound=" + lowerBound + ",upperBound=" + upperBound
+				+ "}";
+	}
+
 	private static class IntBound implements IntPredicate {
 
 		int value;
@@ -87,6 +93,12 @@ public class IntRange implements IntPredicate {
 
 		public boolean isLowerBound() {
 			return lowerBound;
+		}
+
+		@Override
+		public String toString() {
+			return "IntBound{value=" + value + ",lowerBound=" + lowerBound
+					+ ",inclusive=" + inclusive + "}";
 		}
 
 	}

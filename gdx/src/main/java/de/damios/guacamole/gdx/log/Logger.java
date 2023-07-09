@@ -100,4 +100,35 @@ public class Logger {
 			Gdx.app.debug("DEBUG", classPrefix + String.format(message, args));
 	}
 
+	@Override
+	public String toString() {
+		return "Logger{classPrefix=" + classPrefix + "}";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((classPrefix == null) ? 0 : classPrefix.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Logger other = (Logger) obj;
+		if (classPrefix == null) {
+			if (other.classPrefix != null)
+				return false;
+		} else if (!classPrefix.equals(other.classPrefix))
+			return false;
+		return true;
+	}
+
 }

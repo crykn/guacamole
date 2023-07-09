@@ -25,7 +25,7 @@ import com.badlogic.gdx.math.Vector2;
 public final class IntVector2 implements Serializable, Vector<IntVector2> {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	/** The x-component of this vector. **/
 	public int x;
 	/** The y-component of this vector. **/
@@ -323,6 +323,11 @@ public final class IntVector2 implements Serializable, Vector<IntVector2> {
 		this.x = 0;
 		this.y = 0;
 		return this;
+	}
+
+	@Override
+	public String toString() {
+		return "IntVector{x=" + x + ",y=" + y + "}";
 	}
 
 	@Override
