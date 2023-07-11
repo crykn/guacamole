@@ -23,7 +23,7 @@ import java.lang.annotation.Target;
 /**
  * Denotes a public API that may be subject to significant changes or even
  * removal in a future release. This annotation does not make any note about the
- * quality of the annotated API, but rather it permanence.
+ * quality of the annotated API, but rather its permanence.
  * <p>
  * Inspired by
  * <a href="https://github.com/google/guava/wiki/PhilosophyExplained#beta-apis">
