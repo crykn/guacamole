@@ -136,7 +136,7 @@ public class ReflectionUtils {
 		return Collections.unmodifiableSet(allSuperTypes);
 	}
 
-	public <A extends java.lang.annotation.Annotation> @Nullable A getAnnotationObject(
+	public static <A extends java.lang.annotation.Annotation> @Nullable A getAnnotationObject(
 			Field field, Class<A> clazz) {
 		Annotation annotation = field.getDeclaredAnnotation(clazz);
 		if (annotation == null)
