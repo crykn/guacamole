@@ -15,7 +15,6 @@
 
 package de.damios.guacamole.gdx.reflection;
 
-import java.lang.annotation.Annotation;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -26,6 +25,7 @@ import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
 
+import com.badlogic.gdx.utils.reflect.Annotation;
 import com.badlogic.gdx.utils.reflect.ClassReflection;
 import com.badlogic.gdx.utils.reflect.Constructor;
 import com.badlogic.gdx.utils.reflect.Field;
@@ -136,6 +136,15 @@ public class ReflectionUtils {
 		return Collections.unmodifiableSet(allSuperTypes);
 	}
 
+	public <A extends java.lang.annotation.Annotation> @Nullable A getAnnotationObject(
+			Field field, Class<A> clazz) {
+		Annotation annotation = field.getDeclaredAnnotation(clazz);
+		if (annotation == null)
+			return null;
+
+		return annotation.getAnnotation(clazz);
+	}
+
 	/**
 	 * Finds all methods within {@code clazz} and its super types annotated with
 	 * {@code annotationClass}.
@@ -145,13 +154,14 @@ public class ReflectionUtils {
 	 * @return
 	 */
 	public static Iterable<Method> findAnnotatedMethods(
-			Class<? extends Annotation> annotationClass, Class<?> clazz) {
+			Class<? extends java.lang.annotation.Annotation> annotationClass,
+			Class<?> clazz) {
 		return findAnnotatedMethods(annotationClass, clazz, null);
 	}
 
 	public static Iterable<Method> findAnnotatedMethods(
-			Class<? extends Annotation> annotationClass, Class<?> clazz,
-			@Nullable Predicate<Method> predicate) {
+			Class<? extends java.lang.annotation.Annotation> annotationClass,
+			Class<?> clazz, @Nullable Predicate<Method> predicate) {
 		Map<Integer, Method> subscribingMethods = new HashMap<>();
 		Set<Class<?>> allSuperTypes = retrieveAllSuperTypes(clazz);
 		for (Class<?> type : allSuperTypes) {
