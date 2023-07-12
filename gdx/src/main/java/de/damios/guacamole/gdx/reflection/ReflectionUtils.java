@@ -67,16 +67,13 @@ public class ReflectionUtils {
 	 * {@code null} if the reflection or instantiation fails.
 	 * 
 	 * @param <T>
-	 * @param className
 	 * @param clazz
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public static @Nullable <T> T newInstanceOrNull(String className,
-			Class<T> clazz) {
+	public static @Nullable <T> T newInstanceOrNull(Class<T> clazz) {
 		try {
-			return (T) ClassReflection
-					.newInstance(ClassReflection.forName(className));
+			return (T) ClassReflection.newInstance(clazz);
 		} catch (ReflectionException e) {
 			LOG.debug(e.getLocalizedMessage());
 			return null;
