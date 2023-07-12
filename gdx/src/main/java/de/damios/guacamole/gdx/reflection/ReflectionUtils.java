@@ -63,8 +63,8 @@ public class ReflectionUtils {
 	}
 
 	/**
-	 * Creates a class via libGDX reflection by using its name. Returns
-	 * {@code null} if the reflection or instantiation fails.
+	 * Creates a class via libGDX's reflection. Returns {@code null} if the
+	 * reflection or instantiation fails.
 	 * 
 	 * @param <T>
 	 * @param clazz
@@ -74,6 +74,27 @@ public class ReflectionUtils {
 	public static @Nullable <T> T newInstanceOrNull(Class<T> clazz) {
 		try {
 			return (T) ClassReflection.newInstance(clazz);
+		} catch (ReflectionException e) {
+			LOG.debug(e.getLocalizedMessage());
+			return null;
+		}
+	}
+
+	/**
+	 * Creates a class via libGDX's reflection by using the classes' name.
+	 * Returns {@code null} if the reflection or instantiation fails.
+	 * 
+	 * @param <T>
+	 * @param className
+	 * @param clazz
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public static @Nullable <T> T newInstanceOrNull(String className,
+			Class<T> clazz) {
+		try {
+			return (T) ClassReflection
+					.newInstance(ClassReflection.forName(className));
 		} catch (ReflectionException e) {
 			LOG.debug(e.getLocalizedMessage());
 			return null;
