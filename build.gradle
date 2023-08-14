@@ -3,7 +3,6 @@ buildscript {
         mavenLocal()
         mavenCentral()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-        maven { url 'https://jitpack.io' }
     }
     dependencies {
     }
@@ -41,9 +40,11 @@ project(":core") {
     dependencies {
     	api "com.google.code.findbugs:jsr305:$jsrVersion"
     	
+    	testImplementation "org.junit.platform:junit-platform-launcher:1.2.0" // needed for a bug in older eclipse versions
     	testImplementation "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
     } 
 }
+
 project(":gdx") {
 	apply plugin: "java-library"
 	
@@ -52,6 +53,7 @@ project(":gdx") {
         api "com.github.tommyettinger:formic:$formicVersion"
         implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
         
+        testImplementation "org.junit.platform:junit-platform-launcher:1.2.0" // needed for a bug in older eclipse versions
         testImplementation "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
         testImplementation "org.mockito:mockito-core:$mockitoVersion"
         testImplementation "com.badlogicgames.gdx:gdx:$gdxVersion"
@@ -87,7 +89,7 @@ project(":gdx-gwt") {
     }
 }
 
-// Clearing Eclipse project data in root folder:
+// Clearing Eclipse project data in root folder
 tasks.eclipse.doLast {
 	delete '.project'
 	delete '.classpath'
