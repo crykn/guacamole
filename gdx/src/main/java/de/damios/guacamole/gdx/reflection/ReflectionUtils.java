@@ -62,6 +62,15 @@ public class ReflectionUtils {
 		return FieldConverter.convertFieldObject(field);
 	}
 
+	public static @Nullable Class<?> getClassByName(String name) {
+		try {
+			return ClassReflection.forName(name);
+		} catch (ReflectionException e) {
+			LOG.debug(e.getLocalizedMessage());
+			return null;
+		}
+	}
+
 	/**
 	 * Creates a class via libGDX's reflection. Returns {@code null} if the
 	 * reflection or instantiation fails.
@@ -111,7 +120,7 @@ public class ReflectionUtils {
 	 * @param parameterTypes
 	 *            an array of the constructor's parameter types
 	 * @param args
-	 *            the objects that should be handed to the constructor
+	 *            an array of objects that should be handed to the constructor
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
