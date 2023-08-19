@@ -118,7 +118,7 @@ public class ReflectionUtils {
 			return newInstanceWithParamsOrNull(
 					ClassReflection.getConstructor(
 							ClassReflection.forName(className), parameterTypes),
-					parameterTypes, args);
+					args);
 		} catch (ReflectionException e) {
 			LOG.debug(e.getLocalizedMessage());
 			return null;
@@ -131,17 +131,14 @@ public class ReflectionUtils {
 	 * Returns {@code defaultValue} if the reflection or instantiation fails.
 	 * 
 	 * @param <T>
-	 * @param className
-	 * @param clazz
-	 * @param parameterTypes
-	 *            an array of the constructor's parameter types
+	 * @param constructor
 	 * @param args
 	 *            an array of objects that should be handed to the constructor
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
 	public static @Nullable <T> T newInstanceWithParamsOrNull(
-			Constructor constructor, Class[] parameterTypes, Object[] args) {
+			Constructor constructor, Object[] args) {
 		try {
 			return (T) constructor.newInstance(args);
 		} catch (ReflectionException e) {
