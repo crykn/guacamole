@@ -32,6 +32,7 @@ import com.badlogic.gdx.utils.reflect.Field;
 import com.badlogic.gdx.utils.reflect.Method;
 import com.badlogic.gdx.utils.reflect.ReflectionException;
 
+import de.damios.guacamole.Exceptions;
 import de.damios.guacamole.Preconditions;
 import de.damios.guacamole.gdx.log.Logger;
 import de.damios.guacamole.gdx.log.LoggerService;
@@ -54,7 +55,7 @@ public class ReflectionUtils {
 		try {
 			return ClassReflection.forName(name);
 		} catch (ReflectionException e) {
-			LOG.debug(e.getLocalizedMessage());
+			LOG.debug(Exceptions.getStackTraceAsString(e));
 			return null;
 		}
 	}
@@ -72,7 +73,7 @@ public class ReflectionUtils {
 		try {
 			return (T) ClassReflection.newInstance(clazz);
 		} catch (ReflectionException e) {
-			LOG.debug(e.getLocalizedMessage());
+			LOG.debug(Exceptions.getStackTraceAsString(e));
 			return null;
 		}
 	}
@@ -93,7 +94,7 @@ public class ReflectionUtils {
 			return (T) ClassReflection
 					.newInstance(ClassReflection.forName(className));
 		} catch (ReflectionException e) {
-			LOG.debug(e.getLocalizedMessage());
+			LOG.debug(Exceptions.getStackTraceAsString(e));
 			return null;
 		}
 	}
@@ -120,7 +121,7 @@ public class ReflectionUtils {
 							ClassReflection.forName(className), parameterTypes),
 					args);
 		} catch (ReflectionException e) {
-			LOG.debug(e.getLocalizedMessage());
+			LOG.debug(Exceptions.getStackTraceAsString(e));
 			return null;
 		}
 
@@ -142,7 +143,7 @@ public class ReflectionUtils {
 		try {
 			return (T) constructor.newInstance(args);
 		} catch (ReflectionException e) {
-			LOG.debug(e.getLocalizedMessage());
+			LOG.debug(Exceptions.getStackTraceAsString(e));
 			return null;
 		}
 	}

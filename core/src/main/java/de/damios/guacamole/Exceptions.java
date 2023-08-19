@@ -44,7 +44,7 @@ public final class Exceptions {
 	 * {@link Exception#printStackTrace() toString()}.
 	 */
 	@GwtIncompatible // java.io.PrintWriter, java.io.StringWriter
-	public static String getStackTraceAsString(Exception e) {
+	public static String getStackTraceAsString(Throwable e) {
 		StringWriter sw = new StringWriter();
 		e.printStackTrace(new PrintWriter(sw));
 		return sw.toString();
