@@ -29,7 +29,6 @@ import com.badlogic.gdx.utils.reflect.Annotation;
 import com.badlogic.gdx.utils.reflect.ClassReflection;
 import com.badlogic.gdx.utils.reflect.Constructor;
 import com.badlogic.gdx.utils.reflect.Field;
-import com.badlogic.gdx.utils.reflect.FieldConverter;
 import com.badlogic.gdx.utils.reflect.Method;
 import com.badlogic.gdx.utils.reflect.ReflectionException;
 
@@ -49,17 +48,6 @@ public class ReflectionUtils {
 
 	private ReflectionUtils() {
 		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * Converts a {@link java.lang.reflect.Field} to a
-	 * {@link com.badlogic.gdx.utils.reflect.Field}.
-	 * 
-	 * @param field
-	 * @return
-	 */
-	public static Field convertFieldObject(java.lang.reflect.Field field) {
-		return FieldConverter.convertFieldObject(field);
 	}
 
 	public static @Nullable Class<?> getClassByName(String name) {
@@ -127,9 +115,34 @@ public class ReflectionUtils {
 	public static @Nullable <T> T newInstanceWithParamsOrNull(String className,
 			Class<T> clazz, Class[] parameterTypes, Object[] args) {
 		try {
-			Class<T> c = ClassReflection.forName(className);
-			Constructor constructor = ClassReflection.getConstructor(c,
-					parameterTypes);
+			return newInstanceWithParamsOrNull(
+					ClassReflection.getConstructor(
+							ClassReflection.forName(className), parameterTypes),
+					parameterTypes, args);
+		} catch (ReflectionException e) {
+			LOG.debug(e.getLocalizedMessage());
+			return null;
+		}
+
+	}
+
+	/**
+	 * Creates a class via libGDX reflection by using one of its constructors.
+	 * Returns {@code defaultValue} if the reflection or instantiation fails.
+	 * 
+	 * @param <T>
+	 * @param className
+	 * @param clazz
+	 * @param parameterTypes
+	 *            an array of the constructor's parameter types
+	 * @param args
+	 *            an array of objects that should be handed to the constructor
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public static @Nullable <T> T newInstanceWithParamsOrNull(
+			Constructor constructor, Class[] parameterTypes, Object[] args) {
+		try {
 			return (T) constructor.newInstance(args);
 		} catch (ReflectionException e) {
 			LOG.debug(e.getLocalizedMessage());
