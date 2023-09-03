@@ -68,7 +68,7 @@ public class StartOnFirstThreadHelper {
 	 *         in this one
 	 * 
 	 * @see #startNewJvmIfRequired()
-	 * @see StartOnFirstThreadHelper#executeIfJVMValid(Runnable)
+	 * @see StartOnFirstThreadHelper#executeOnValidJVM(Runnable)
 	 */
 	public static boolean startNewJvmIfRequired(boolean redirectOutput) {
 		/* The -XstartOnFirstThread argument is only needed on macOS */
@@ -174,7 +174,7 @@ public class StartOnFirstThreadHelper {
 	 * @return whether a new JVM was started and thus no code should be executed
 	 *         in this one
 	 * @see #startNewJvmIfRequired(boolean)
-	 * @see StartOnFirstThreadHelper#executeIfJVMValid(Runnable)
+	 * @see StartOnFirstThreadHelper#executeOnValidJVM(Runnable)
 	 */
 	public static boolean startNewJvmIfRequired() {
 		return startNewJvmIfRequired(true);
@@ -195,7 +195,7 @@ public class StartOnFirstThreadHelper {
 	 * 
 	 * @param mainMethodCode
 	 */
-	public static void executeIfJVMValid(Runnable mainMethodCode) {
+	public static void executeOnValidJVM(Runnable mainMethodCode) {
 		if (startNewJvmIfRequired()) {
 			return;
 		}
