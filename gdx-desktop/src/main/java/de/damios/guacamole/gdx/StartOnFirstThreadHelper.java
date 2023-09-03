@@ -32,8 +32,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.UIUtils;
  * 
  * @author damios
  * @see <a href=
- *      "http://www.java-gaming.org/topics/starting-jvm-on-mac-with-xstartonfirstthread-programmatically/37697/view.html">Based
- *      on http://www.java-gaming.org/topics/-/37697/view.html</a>
+ *      "https://jvm-gaming.org/t/starting-jvm-on-mac-with-xstartonfirstthread-programmatically/57547">Based
+ *      on https://jvm-gaming.org/t/-/57547</a>
  *
  */
 public class StartOnFirstThreadHelper {
@@ -66,47 +66,59 @@ public class StartOnFirstThreadHelper {
 	 *            old JVM running if enabled
 	 * @return whether a new JVM was started and thus no code should be executed
 	 *         in this one
+	 * 
+	 * @see #startNewJvmIfRequired()
+	 * @see StartOnFirstThreadHelper#executeIfJVMValid(Runnable)
 	 */
 	public static boolean startNewJvmIfRequired(boolean redirectOutput) {
+		/* The -XstartOnFirstThread argument is only needed on macOS */
 		if (!UIUtils.isMac) {
 			return false;
 		}
 
-		long pid = LibC.getpid();
+		/* There is no need for -XstartOnFirstThread on Graal native image */
+		if (System.getProperty("org.graalvm.nativeimage.imagecode", "")
+				.isEmpty()) {
+			return false;
+		}
 
-		// check whether -XstartOnFirstThread is enabled
+		/* Check whether -XstartOnFirstThread is enabled */
+		long pid = LibC.getpid();
 		if ("1".equals(System.getenv("JAVA_STARTED_ON_FIRST_THREAD_" + pid))) {
 			return false;
 		}
 
-		// check whether the JVM was previously restarted
-		// avoids looping, but most certainly leads to a crash
+		/* Check whether the JVM was previously restarted to avoid looping */
 		if ("true".equals(System.getProperty(JVM_RESTARTED_ARG))) {
 			System.err.println(
-					"There was a problem evaluating whether the JVM was started with the -XstartOnFirstThread argument.");
+					"The JVM was restarted, but the -XstartOnFirstThread argument could not be set.");
 			return false;
 		}
 
-		// Restart the JVM with -XstartOnFirstThread
-		ArrayList<String> jvmArgs = new ArrayList<String>();
+		/* Restart the JVM with -XstartOnFirstThread */
+		ArrayList<String> command = new ArrayList<String>();
 		String separator = System.getProperty("file.separator");
 		// TODO Java 9: ProcessHandle.current().info().command();
 		String javaExecPath = System.getProperty("java.home") + separator
 				+ "bin" + separator + "java";
 		if (!(new File(javaExecPath)).exists()) {
+			// The java installation needed for restarting the JVM could not be
+			// determined
 			System.err.println(
 					"A Java installation could not be found. If you are distributing this app with a bundled JRE, be sure to set the -XstartOnFirstThread argument manually!");
 			return false;
 		}
-		jvmArgs.add(javaExecPath);
-		jvmArgs.add("-XstartOnFirstThread");
-		jvmArgs.add("-D" + JVM_RESTARTED_ARG + "=true");
-		jvmArgs.addAll(
+		command.add(javaExecPath);
+		command.add("-XstartOnFirstThread");
+		command.add("-D" + JVM_RESTARTED_ARG + "=true");
+		command.addAll(
 				ManagementFactory.getRuntimeMXBean().getInputArguments());
-		jvmArgs.add("-cp");
-		jvmArgs.add(System.getProperty("java.class.path"));
+		command.add("-cp");
+		command.add(System.getProperty("java.class.path"));
 		String mainClass = System.getenv("JAVA_MAIN_CLASS_" + pid);
 		if (mainClass == null) {
+			// Sometimes the main class cannot be determined, so we'll have to
+			// fall back to this workaround
 			StackTraceElement trace[] = Thread.currentThread().getStackTrace();
 			if (trace.length > 0) {
 				mainClass = trace[trace.length - 1].getClassName();
@@ -115,14 +127,14 @@ public class StartOnFirstThreadHelper {
 				return false;
 			}
 		}
-		jvmArgs.add(mainClass);
+		command.add(mainClass);
 
 		try {
 			if (!redirectOutput) {
-				ProcessBuilder processBuilder = new ProcessBuilder(jvmArgs);
+				ProcessBuilder processBuilder = new ProcessBuilder(command);
 				processBuilder.start();
 			} else {
-				Process process = (new ProcessBuilder(jvmArgs))
+				Process process = (new ProcessBuilder(command))
 						.redirectErrorStream(true).start();
 				BufferedReader processOutput = new BufferedReader(
 						new InputStreamReader(process.getInputStream()));
@@ -161,6 +173,8 @@ public class StartOnFirstThreadHelper {
 	 * 
 	 * @return whether a new JVM was started and thus no code should be executed
 	 *         in this one
+	 * @see #startNewJvmIfRequired(boolean)
+	 * @see StartOnFirstThreadHelper#executeIfJVMValid(Runnable)
 	 */
 	public static boolean startNewJvmIfRequired() {
 		return startNewJvmIfRequired(true);
