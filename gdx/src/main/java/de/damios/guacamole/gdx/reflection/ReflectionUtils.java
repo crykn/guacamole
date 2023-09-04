@@ -51,7 +51,7 @@ public class ReflectionUtils {
 		throw new UnsupportedOperationException();
 	}
 
-	public static @Nullable Class<?> getClassByName(String name) {
+	public static @Nullable Class<?> getClassByNameOrNull(String name) {
 		try {
 			return ClassReflection.forName(name);
 		} catch (ReflectionException e) {
@@ -100,8 +100,9 @@ public class ReflectionUtils {
 	}
 
 	/**
-	 * Creates a class via libGDX reflection by using its name. Returns
-	 * {@code defaultValue} if the reflection or instantiation fails.
+	 * Creates a class via libGDX reflection by using the class's constructor
+	 * determined by {@code parameterTypes}. Returns {@code null} if the
+	 * reflection or instantiation fails.
 	 * 
 	 * @param <T>
 	 * @param className
@@ -129,7 +130,7 @@ public class ReflectionUtils {
 
 	/**
 	 * Creates a class via libGDX reflection by using one of its constructors.
-	 * Returns {@code defaultValue} if the reflection or instantiation fails.
+	 * Returns {@code null} if the reflection or instantiation fails.
 	 * 
 	 * @param <T>
 	 * @param constructor
