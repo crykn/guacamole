@@ -42,7 +42,7 @@ public class ThreadHandler {
 		this.cachedPool = (ThreadPoolExecutor) Executors.newCachedThreadPool(new DaemonThreadFactory(name));
 	}
 
-	public static ThreadHandler getInstance() {
+	public static ThreadHandler instance() {
 		return instance;
 	}
 
