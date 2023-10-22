@@ -102,7 +102,7 @@ public class Logger {
 
 	private String getFormattedString(String message, Object... args) {
 		try {
-			return classPrefix + String.format(message);
+			return classPrefix + String.format(message, args);
 		} catch (IllegalArgumentException e) {
 			return classPrefix + message;
 		}
