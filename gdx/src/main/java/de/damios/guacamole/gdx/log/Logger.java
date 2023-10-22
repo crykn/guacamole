@@ -59,7 +59,7 @@ public class Logger {
 	public void info(String message, Object... args) {
 		if (LoggerService.isInfoEnabled()) // so the message isn't formatted
 											// unnecessarily
-			Gdx.app.log("INFO ", classPrefix + String.format(message, args));
+			Gdx.app.log("INFO ", getFormattedString(message, args));
 	}
 
 	/**
@@ -78,7 +78,7 @@ public class Logger {
 	public void error(String message, Object... args) {
 		if (LoggerService.isErrorEnabled()) // so the message isn't formatted
 											// unnecessarily
-			Gdx.app.error("ERROR", classPrefix + String.format(message, args));
+			Gdx.app.error("ERROR", getFormattedString(message, args));
 	}
 
 	/**
@@ -97,7 +97,15 @@ public class Logger {
 	public void debug(String message, Object... args) {
 		if (LoggerService.isDebugEnabled()) // so the message isn't formatted
 											// unnecessarily
-			Gdx.app.debug("DEBUG", classPrefix + String.format(message, args));
+			Gdx.app.debug("DEBUG", getFormattedString(message, args));
+	}
+
+	private String getFormattedString(String message, Object... args) {
+		try {
+			return classPrefix + String.format(message);
+		} catch (IllegalArgumentException e) {
+			return classPrefix + message;
+		}
 	}
 
 	@Override
