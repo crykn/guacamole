@@ -20,6 +20,8 @@ import java.util.Formatter;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 
+import de.damios.guacamole.gdx.log.LoggerService.LogLevel;
+
 /**
  * A logger for libGDX that wraps calls to
  * {@link Application#log(String, String) Gdx.app.log(String, String)} etc. Can
@@ -44,8 +46,46 @@ public class Logger {
 	}
 
 	/**
-	 * Logs an informational message. The message is formatted via
-	 * {@link String#format(String, Object...)}.
+	 * Logs a {@linkplain LogLevel#TRACE trace} message. The message is
+	 * formatted via {@link String#format(String, Object...)}.
+	 *
+	 * @param message
+	 *            the log message
+	 * @param args
+	 *            the arguments referenced by the format specifiers in the
+	 *            message string. If there are more arguments than format
+	 *            specifiers, the extra arguments are ignored. The number of
+	 *            arguments is variable and may be zero.
+	 * @see Formatter
+	 */
+	public void trace(String message, Object... args) {
+		if (LoggerService.isTraceEnabled()) // so the message isn't formatted
+											// unnecessarily
+			Gdx.app.debug("TRACE", getFormattedString(message, args));
+	}
+
+	/**
+	 * Logs a {@linkplain LogLevel#DEBUG debug} message. The message is
+	 * formatted via {@link String#format(String, Object...)}.
+	 *
+	 * @param message
+	 *            the log message
+	 * @param args
+	 *            the arguments referenced by the format specifiers in the
+	 *            message string. If there are more arguments than format
+	 *            specifiers, the extra arguments are ignored. The number of
+	 *            arguments is variable and may be zero.
+	 * @see Formatter
+	 */
+	public void debug(String message, Object... args) {
+		if (LoggerService.isDebugEnabled()) // so the message isn't formatted
+											// unnecessarily
+			Gdx.app.debug("DEBUG", getFormattedString(message, args));
+	}
+
+	/**
+	 * Logs an {@linkplain LogLevel#INFO informational} message. The message is
+	 * formatted via {@link String#format(String, Object...)}.
 	 *
 	 * @param message
 	 *            the log message
@@ -63,8 +103,27 @@ public class Logger {
 	}
 
 	/**
-	 * Logs an <i>error</i> message. The message is formatted via
-	 * {@link String#format(String, Object...)}.
+	 * Logs a {@linkplain LogLevel#WARN warning} message. The message is
+	 * formatted via {@link String#format(String, Object...)}.
+	 *
+	 * @param message
+	 *            the log message
+	 * @param args
+	 *            the arguments referenced by the format specifiers in the
+	 *            message string. If there are more arguments than format
+	 *            specifiers, the extra arguments are ignored. The number of
+	 *            arguments is variable and may be zero.
+	 * @see Formatter
+	 */
+	public void warn(String message, Object... args) {
+		if (LoggerService.isWarnEnabled()) // so the message isn't formatted
+											// unnecessarily
+			Gdx.app.error("WARN ", getFormattedString(message, args));
+	}
+
+	/**
+	 * Logs an {@linkplain LogLevel#ERROR error} message. The message is
+	 * formatted via {@link String#format(String, Object...)}.
 	 *
 	 * @param message
 	 *            the error message
@@ -79,25 +138,6 @@ public class Logger {
 		if (LoggerService.isErrorEnabled()) // so the message isn't formatted
 											// unnecessarily
 			Gdx.app.error("ERROR", getFormattedString(message, args));
-	}
-
-	/**
-	 * Logs a <i>debug</i> message. The message is formatted via
-	 * {@link String#format(String, Object...)}.
-	 *
-	 * @param message
-	 *            the log message
-	 * @param args
-	 *            the arguments referenced by the format specifiers in the
-	 *            message string. If there are more arguments than format
-	 *            specifiers, the extra arguments are ignored. The number of
-	 *            arguments is variable and may be zero.
-	 * @see Formatter
-	 */
-	public void debug(String message, Object... args) {
-		if (LoggerService.isDebugEnabled()) // so the message isn't formatted
-											// unnecessarily
-			Gdx.app.debug("DEBUG", getFormattedString(message, args));
 	}
 
 	private String getFormattedString(String message, Object... args) {

@@ -39,6 +39,44 @@ import text.formic.Stringf;
  */
 public class LoggerService {
 
+	public enum LogLevel {
+
+		/**
+		 * Log nothing.
+		 */
+		NONE(0),
+		/**
+		 * Log errors which are fatal to the operation or application.
+		 */
+		ERROR(1),
+		/**
+		 * Log potentially harmful situations.
+		 */
+		WARN(1),
+		/**
+		 * Log generally useful information.
+		 */
+		INFO(2),
+		/**
+		 * Log information useful for debugging.
+		 */
+		DEBUG(3),
+		/**
+		 * Log fine-grained information useful for debugging parts of the
+		 * application.
+		 */
+		TRACE(3);
+
+		private int libgdxLevel;
+
+		private LogLevel(int libgdxLevel) {
+			this.libgdxLevel = libgdxLevel;
+		}
+
+	}
+
+	private static LogLevel logLevel = LogLevel.INFO;
+
 	private final static Map<String, Logger> loggers = new HashMap<>();
 	private static boolean abbreviateClassNames = true;
 	private static int minClassNameLength = 34;
@@ -82,52 +120,49 @@ public class LoggerService {
 	}
 
 	/**
-	 * Disables all log messages.
+	 * Set the log level of all {@link Logger}s. This also changes the
+	 * {@linkplain Application#setLogLevel(int) libGDX log level} to match it.
+	 * 
+	 * @param level
 	 */
-	public static void showNone() {
-		Gdx.app.setLogLevel(Application.LOG_NONE);
+	public static void setLogLevel(LogLevel level) {
+		Gdx.app.setLogLevel(level.libgdxLevel);
+		logLevel = level;
 	}
 
 	/**
-	 * Enables only error messages.
+	 * @return whether {@linkplain LogLevel#TRACE trace} messages are logged
 	 */
-	public static void showOnlyErrors() {
-		Gdx.app.setLogLevel(Application.LOG_ERROR);
+	public static boolean isTraceEnabled() {
+		return logLevel.ordinal() >= LogLevel.TRACE.ordinal();
 	}
 
 	/**
-	 * Enables info messages, in addition to error messages.
-	 */
-	public static void showInfoAndErrors() {
-		Gdx.app.setLogLevel(Application.LOG_INFO);
-	}
-
-	/**
-	 * Enables all log messages, i.e. error, info, and debug ones.
-	 */
-	public static void showAll() {
-		Gdx.app.setLogLevel(Application.LOG_DEBUG);
-	}
-
-	/**
-	 * @return whether debug messages are logged
+	 * @return whether {@linkplain LogLevel#DEBUG debug} messages are logged
 	 */
 	public static boolean isDebugEnabled() {
-		return Gdx.app.getLogLevel() >= Application.LOG_DEBUG;
+		return logLevel.ordinal() >= LogLevel.DEBUG.ordinal();
 	}
 
 	/**
-	 * @return whether info messages are logged
+	 * @return whether {@linkplain LogLevel#INFO info} messages are logged
 	 */
 	public static boolean isInfoEnabled() {
-		return Gdx.app.getLogLevel() >= Application.LOG_INFO;
+		return logLevel.ordinal() >= LogLevel.INFO.ordinal();
 	}
 
 	/**
-	 * @return whether error messages are logged
+	 * @return whether {@linkplain LogLevel#WARN warn} messages are logged
+	 */
+	public static boolean isWarnEnabled() {
+		return logLevel.ordinal() >= LogLevel.WARN.ordinal();
+	}
+
+	/**
+	 * @return whether {@linkplain LogLevel#ERROR error} messages are logged
 	 */
 	public static boolean isErrorEnabled() {
-		return Gdx.app.getLogLevel() >= Application.LOG_ERROR;
+		return logLevel.ordinal() >= LogLevel.ERROR.ordinal();
 	}
 
 	/**

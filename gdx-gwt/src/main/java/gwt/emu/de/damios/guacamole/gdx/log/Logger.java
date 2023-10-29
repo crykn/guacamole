@@ -28,7 +28,7 @@ import text.formic.Stringf;
  * {@link Application#log(String, String) Gdx.app.log(String, String)} etc. Can
  * be obtained via {@link LoggerService#getLogger(Class)}.
  * <p>
- * Adds support for formatting ({@link String#format(String, Object...)}). For
+ * Adds support for formatting ({@link Stringf#format(String, Object...)}). For
  * example, calling {@code logger.error("something went %s!", "wrong")} would
  * lead to the following output:
  * 
@@ -40,15 +40,15 @@ import text.formic.Stringf;
  */
 public class Logger {
 
-	private static String classPrefix;
+	private String classPrefix;
 
 	Logger(String className) {
 		this.classPrefix = Stringf.format("[%s]: ", className);
 	}
 
 	/**
-	 * Logs an informational message. The message is formatted via
-	 * {@link Stringf#format(String, Object...)}.
+	 * Logs a <i>trace</i> message. The message is formatted via
+	 * {@link String#format(String, Object...)}.
 	 *
 	 * @param message
 	 *            the log message
@@ -59,34 +59,15 @@ public class Logger {
 	 *            arguments is variable and may be zero.
 	 * @see Formatter
 	 */
-	public void info(String message, Object... args) {
-		if (LoggerService.isInfoEnabled()) // so the message isn't formatted
+	public void trace(String message, Object... args) {
+		if (LoggerService.isTraceEnabled()) // so the message isn't formatted
 											// unnecessarily
-			Gdx.app.log("INFO ", classPrefix + Stringf.format(message, args));
-	}
-
-	/**
-	 * Logs an <i>error</i> message. The message is formatted via
-	 * {@link Stringf#format(String, Object...)}.
-	 *
-	 * @param message
-	 *            the error message
-	 * @param args
-	 *            the arguments referenced by the format specifiers in the
-	 *            message string. If there are more arguments than format
-	 *            specifiers, the extra arguments are ignored. The number of
-	 *            arguments is variable and may be zero.
-	 * @see Formatter
-	 */
-	public void error(String message, Object... args) {
-		if (LoggerService.isErrorEnabled()) // so the message isn't formatted
-											// unnecessarily
-			Gdx.app.error("ERROR", classPrefix + Stringf.format(message, args));
+			Gdx.app.debug("TRACE", getFormattedString(message, args));
 	}
 
 	/**
 	 * Logs a <i>debug</i> message. The message is formatted via
-	 * {@link Stringf#format(String, Object...)}.
+	 * {@link String#format(String, Object...)}.
 	 *
 	 * @param message
 	 *            the log message
@@ -100,7 +81,103 @@ public class Logger {
 	public void debug(String message, Object... args) {
 		if (LoggerService.isDebugEnabled()) // so the message isn't formatted
 											// unnecessarily
-			Gdx.app.debug("DEBUG", classPrefix + Stringf.format(message, args));
+			Gdx.app.debug("DEBUG", getFormattedString(message, args));
+	}
+
+	/**
+	 * Logs an <i>informational</i> message. The message is formatted via
+	 * {@link String#format(String, Object...)}.
+	 *
+	 * @param message
+	 *            the log message
+	 * @param args
+	 *            the arguments referenced by the format specifiers in the
+	 *            message string. If there are more arguments than format
+	 *            specifiers, the extra arguments are ignored. The number of
+	 *            arguments is variable and may be zero.
+	 * @see Formatter
+	 */
+	public void info(String message, Object... args) {
+		if (LoggerService.isInfoEnabled()) // so the message isn't formatted
+											// unnecessarily
+			Gdx.app.log("INFO ", getFormattedString(message, args));
+	}
+
+	/**
+	 * Logs a <i>warning</i> message. The message is formatted via
+	 * {@link String#format(String, Object...)}.
+	 *
+	 * @param message
+	 *            the log message
+	 * @param args
+	 *            the arguments referenced by the format specifiers in the
+	 *            message string. If there are more arguments than format
+	 *            specifiers, the extra arguments are ignored. The number of
+	 *            arguments is variable and may be zero.
+	 * @see Formatter
+	 */
+	public void warn(String message, Object... args) {
+		if (LoggerService.isWarnEnabled()) // so the message isn't formatted
+											// unnecessarily
+			Gdx.app.error("WARN ", getFormattedString(message, args));
+	}
+
+	/**
+	 * Logs an <i>error</i> message. The message is formatted via
+	 * {@link String#format(String, Object...)}.
+	 *
+	 * @param message
+	 *            the error message
+	 * @param args
+	 *            the arguments referenced by the format specifiers in the
+	 *            message string. If there are more arguments than format
+	 *            specifiers, the extra arguments are ignored. The number of
+	 *            arguments is variable and may be zero.
+	 * @see Formatter
+	 */
+	public void error(String message, Object... args) {
+		if (LoggerService.isErrorEnabled()) // so the message isn't formatted
+											// unnecessarily
+			Gdx.app.error("ERROR", getFormattedString(message, args));
+	}
+
+	private String getFormattedString(String message, Object... args) {
+		try {
+			return classPrefix + Stringf.format(message, args);
+		} catch (IllegalArgumentException e) {
+			return classPrefix + message;
+		}
+	}
+
+	@Override
+	public String toString() {
+		return "Logger{classPrefix=" + classPrefix + "}";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((classPrefix == null) ? 0 : classPrefix.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Logger other = (Logger) obj;
+		if (classPrefix == null) {
+			if (other.classPrefix != null)
+				return false;
+		} else if (!classPrefix.equals(other.classPrefix))
+			return false;
+		return true;
 	}
 
 }
