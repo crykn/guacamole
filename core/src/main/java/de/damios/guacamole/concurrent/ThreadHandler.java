@@ -15,9 +15,14 @@
 
 package de.damios.guacamole.concurrent;
 
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+import java.util.function.BiConsumer;
 
 import de.damios.guacamole.annotations.GwtIncompatible;
 
@@ -35,24 +40,60 @@ import de.damios.guacamole.annotations.GwtIncompatible;
 @GwtIncompatible
 public class ThreadHandler {
 
-	private static final ThreadHandler instance = new ThreadHandler("ThreadHandler");
+	private static final ThreadHandler instance = new ThreadHandler(
+			"ThreadHandler");
 	private final ThreadPoolExecutor cachedPool;
+	private BiConsumer<Runnable, Throwable> exceptionHandler;
 
 	private ThreadHandler(String name) {
-		this.cachedPool = (ThreadPoolExecutor) Executors.newCachedThreadPool(new DaemonThreadFactory(name));
+		// See Executors#newCachedThreadPool
+		this.cachedPool = new ThreadPoolExecutor(0, Integer.MAX_VALUE, 60L,
+				TimeUnit.SECONDS, new SynchronousQueue<Runnable>(),
+				new DaemonThreadFactory(name)) {
+			@Override
+			protected void afterExecute(Runnable r, Throwable t) {
+				super.afterExecute(r, t);
+
+				if (exceptionHandler != null) {
+					// See https://stackoverflow.com/a/2248203
+					if (t == null && r instanceof Future<?>) {
+						try {
+							Future<?> future = (Future<?>) r;
+							if (future.isDone()) {
+								future.get();
+							}
+						} catch (CancellationException ce) {
+							t = ce;
+						} catch (ExecutionException ee) {
+							t = ee.getCause();
+						} catch (InterruptedException ie) {
+							Thread.currentThread().interrupt();
+						}
+					}
+					if (t != null) {
+						exceptionHandler.accept(r, t);
+					}
+				}
+			}
+		};
 	}
 
 	public static ThreadHandler instance() {
 		return instance;
 	}
 
+	public void setExceptionHandler(
+			BiConsumer<Runnable, Throwable> exceptionHandler) {
+		this.exceptionHandler = exceptionHandler;
+	}
+
 	/**
 	 * Executes a task asynchronously.
 	 * <p>
-	 * For this, a {@linkplain Executors#newCachedThreadPool() cached thread pool}
-	 * is used, i.e. previously constructed threads will be reused, if available,
-	 * otherwise new threads are created. All threads are daemon threads, so they
-	 * don't prevent the JVM from exiting.
+	 * For this, a {@linkplain Executors#newCachedThreadPool() cached thread
+	 * pool} is used, i.e. previously constructed threads will be reused, if
+	 * available, otherwise new threads are created. All threads are daemon
+	 * threads, so they don't prevent the JVM from exiting.
 	 * 
 	 * @param r
 	 *            the task to execute
@@ -64,7 +105,8 @@ public class ThreadHandler {
 	}
 
 	/**
-	 * Returns the approximate number of threads that are actively executing tasks.
+	 * Returns the approximate number of threads that are actively executing
+	 * tasks.
 	 *
 	 * @return the number of active threads
 	 */
