@@ -15,12 +15,15 @@
 
 package com.badlogic.gdx.utils.reflect;
 
+import de.damios.guacamole.annotations.GwtIncompatible;
+
 /**
  * Converts objects from {@link java.lang.reflect} to
  * {@link com.badlogic.gdx.utils.reflect} one's.
  * 
  * @author damios
  */
+@GwtIncompatible
 public class ReflectionConverter {
 
 	private ReflectionConverter() {
