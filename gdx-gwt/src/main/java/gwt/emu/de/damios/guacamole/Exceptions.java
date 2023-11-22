@@ -15,11 +15,6 @@
 
 package de.damios.guacamole;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-
-import de.damios.guacamole.annotations.GwtIncompatible;
-
 /**
  * Static methods for dealing with exceptions.
  * 
@@ -43,11 +38,36 @@ public final class Exceptions {
 	 * Returns a string containing the result of
 	 * {@link Exception#printStackTrace()}.
 	 */
-	@GwtIncompatible // java.io.PrintWriter, java.io.StringWriter
 	public static String getStackTraceAsString(Throwable e) {
-		StringWriter sw = new StringWriter();
-		e.printStackTrace(new PrintWriter(sw));
-		return sw.toString();
+		return getStackTraceAsStringImpl(e, "", "");
+	}
+
+	// Inspired by the emulated Throwable#printStackTraceImpl
+	private static String getStackTraceAsStringImpl(Throwable e, String prefix,
+			String ident) {
+		String out = "\n" + ident + prefix + e.toString();
+		out += getStackTraceItems(e, ident);
+
+		for (Throwable t : e.getSuppressed()) {
+			out += getStackTraceAsStringImpl(t, "Suppressed: ", "\t" + ident);
+		}
+
+		Throwable theCause = e.getCause();
+		if (theCause != null) {
+			out += getStackTraceAsStringImpl(theCause, "Caused by: ", ident);
+		}
+
+		return out;
+	}
+
+	// Inspired by the emulated Throwable#printStackTraceItems
+	private static String getStackTraceItems(Throwable e, String ident) {
+		String out = "";
+		for (StackTraceElement element : e.getStackTrace()) {
+			out += "\n" + ident + "\tat " + element;
+		}
+
+		return out;
 	}
 
 }
