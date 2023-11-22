@@ -34,6 +34,7 @@ import com.badlogic.gdx.utils.reflect.ReflectionException;
 
 import de.damios.guacamole.Exceptions;
 import de.damios.guacamole.Preconditions;
+import de.damios.guacamole.annotations.GwtIncompatible;
 import de.damios.guacamole.gdx.log.Logger;
 import de.damios.guacamole.gdx.log.LoggerService;
 
@@ -175,7 +176,9 @@ public class ReflectionUtils {
 		return Collections.unmodifiableSet(allSuperTypes);
 	}
 
-	public static <A extends java.lang.annotation.Annotation> @Nullable A getAnnotationObject(
+	// Can't mark this with @Nullable because of GWT ("Annotation types that do
+	// not specify explicit target element types cannot be applied here")
+	public static <A extends java.lang.annotation.Annotation> A getAnnotationObject(
 			Field field, Class<A> clazz) {
 		Annotation annotation = field.getDeclaredAnnotation(clazz);
 		if (annotation == null)
