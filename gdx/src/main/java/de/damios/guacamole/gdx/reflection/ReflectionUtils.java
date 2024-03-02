@@ -34,7 +34,6 @@ import com.badlogic.gdx.utils.reflect.ReflectionException;
 
 import de.damios.guacamole.Exceptions;
 import de.damios.guacamole.Preconditions;
-import de.damios.guacamole.annotations.GwtIncompatible;
 import de.damios.guacamole.gdx.log.Logger;
 import de.damios.guacamole.gdx.log.LoggerService;
 

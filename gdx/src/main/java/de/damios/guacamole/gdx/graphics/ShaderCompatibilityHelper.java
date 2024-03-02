@@ -20,7 +20,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.utils.UIUtils;
 
-import de.damios.guacamole.gdx.graphics.ShaderProgramFactory;
+import de.damios.guacamole.gdx.reflection.ReflectionUtils;
 
 /**
  * This class allows programmatically porting GLSL shader code from version 120
@@ -111,6 +111,11 @@ public class ShaderCompatibilityHelper {
 	}
 
 	public static String getDefaultShaderVersion() {
+		if (ReflectionUtils.getClassByNameOrNull(
+				"com.badlogic.gdx.backends.lwjgl3.awt.GlfwAWTLoader") != null)
+			return "100"; // ANGLE, see
+							// https://github.com/google/angle/blob/0ed0de4f0b7f5a81fbe35b28e6a68a739f365556/src/compiler/translator/DirectiveHandler.cpp#L285
+
 		if (mustUse32CShader())
 			return "150"; // macOS 3.2 core profile
 
