@@ -112,7 +112,7 @@ public class ShaderCompatibilityHelper {
 
 	public static String getDefaultShaderVersion() {
 		if (ReflectionUtils.getClassByNameOrNull(
-				"com.badlogic.gdx.backends.lwjgl3.awt.GlfwAWTLoader") != null)
+				"com.badlogic.gdx.backends.lwjgl3.angle.ANGLELoader") != null)
 			return "100"; // ANGLE, see
 							// https://github.com/google/angle/blob/0ed0de4f0b7f5a81fbe35b28e6a68a739f365556/src/compiler/translator/DirectiveHandler.cpp#L285
 
