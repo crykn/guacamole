@@ -20,8 +20,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.utils.UIUtils;
 
-import de.damios.guacamole.gdx.reflection.ReflectionUtils;
-
 /**
  * This class allows programmatically porting GLSL shader code from version 120
  * (~ OpenGL 2.1) to version 150 (~ OpenGL 3.2).
@@ -105,28 +103,26 @@ public class ShaderCompatibilityHelper {
 	}
 
 	public static boolean mustUse32CShader() {
-		// TODO use PlatformUtils.isMac (see
+		// Since gl30 != null, we can be sure that we aren't running on ANGLE
+		// TODO: use PlatformUtils.isMac (see
 		// https://github.com/libgdx/libgdx/pull/5960)
 		return Gdx.gl30 != null && UIUtils.isMac;
 	}
 
-	public static String getDefaultShaderVersion() {
-		if (ReflectionUtils.getClassByNameOrNull(
-				"com.badlogic.gdx.backends.lwjgl3.angle.ANGLELoader") != null)
-			return "100"; // ANGLE, see
-							// https://github.com/google/angle/blob/0ed0de4f0b7f5a81fbe35b28e6a68a739f365556/src/compiler/translator/DirectiveHandler.cpp#L285
-
-		if (mustUse32CShader())
-			return "150"; // macOS 3.2 core profile
-
-		if (Gdx.app.getType() == ApplicationType.Desktop
-				|| Gdx.app.getType() == ApplicationType.HeadlessDesktop)
-			return "120"; // Desktop
-		return "100"; // GLSL ES (Android, iOS, WebGL)
-	}
-
 	public static String getDefaultShaderVersionStatement() {
-		return "#version " + getDefaultShaderVersion() + "\n";
+		if (mustUse32CShader())
+			return "#version 150\n"; // macOS 3.2 core profile
+
+		if (Gdx.app.getType() != ApplicationType.Desktop
+				&& Gdx.app.getType() != ApplicationType.HeadlessDesktop)
+			return "#version 100\n"; // GLSL ES (Android, iOS, WebGL); use a
+										// sensible default version because
+										// sometimes this can cause problems?
+
+		return ""; // don't use a version statement on desktop; this should make
+					// the compiler more forgiving and saves us from having to
+					// determine whether we are running on ANGLE (see
+					// https://github.com/google/angle/blob/0ed0de4f0b7f5a81fbe35b28e6a68a739f365556/src/compiler/translator/DirectiveHandler.cpp#L285
 	}
 
 }
