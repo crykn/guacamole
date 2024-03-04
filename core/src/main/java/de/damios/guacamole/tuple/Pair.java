@@ -17,19 +17,19 @@ package de.damios.guacamole.tuple;
 
 import java.util.Objects;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * An immutable pair.
  * 
  * @author damios
  */
-public class Pair<X, Y> {
+public class Pair<@Nullable X, @Nullable Y> {
 
-	public final @Nullable X x;
-	public final @Nullable Y y;
+	public final X x;
+	public final Y y;
 
-	public Pair(@Nullable X x, @Nullable Y y) {
+	public Pair(X x, Y y) {
 		this.x = x;
 		this.y = y;
 	}

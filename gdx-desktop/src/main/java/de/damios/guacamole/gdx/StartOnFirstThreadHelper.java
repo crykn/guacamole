@@ -96,7 +96,7 @@ public class StartOnFirstThreadHelper {
 		}
 
 		/* Restart the JVM with -XstartOnFirstThread */
-		ArrayList<String> command = new ArrayList<String>();
+		ArrayList<String> command = new ArrayList<>();
 		String separator = System.getProperty("file.separator");
 		// TODO Java 9: ProcessHandle.current().info().command();
 		String javaExecPath = System.getProperty("java.home") + separator

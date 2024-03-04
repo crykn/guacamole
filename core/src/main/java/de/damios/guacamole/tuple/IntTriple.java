@@ -15,6 +15,8 @@
 
 package de.damios.guacamole.tuple;
 
+import org.jspecify.annotations.Nullable;
+
 /**
  * An immutable integer value triple.
  * 
@@ -35,7 +37,7 @@ public class IntTriple extends IntPair {
 	}
 
 	@Override
-	public boolean equals(Object other) {
+	public boolean equals(@Nullable Object other) {
 		if (other == this) {
 			return true;
 		}

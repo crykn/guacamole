@@ -17,18 +17,18 @@ package de.damios.guacamole.tuple;
 
 import java.util.Objects;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * An immutable triple.
  * 
  * @author damios
  */
-public class Triple<X, Y, Z> extends Pair<X, Y> {
+public class Triple<@Nullable X, @Nullable Y, @Nullable Z> extends Pair<X, Y> {
 
-	public final @Nullable Z z;
+	public final Z z;
 
-	public Triple(@Nullable X x, @Nullable Y y, @Nullable Z z) {
+	public Triple(X x, Y y, Z z) {
 		super(x, y);
 		this.z = z;
 	}

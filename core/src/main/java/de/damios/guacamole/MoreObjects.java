@@ -17,7 +17,7 @@ package de.damios.guacamole;
 
 import java.util.Objects;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Contains utilities for dealing with objects that are not already provided by
@@ -40,7 +40,7 @@ public class MoreObjects {
 	 * @throws NullPointerException
 	 *             if both {@code first} and {@code second} are null
 	 */
-	public static <T> T firstNonNull(T first, T second) {
+	public static <T> T firstNonNull(@Nullable T first, @Nullable T second) {
 		return first != null ? first : Objects.requireNonNull(second);
 	}
 

@@ -18,7 +18,7 @@ allprojects {
         appName = "guacamole"
         formicVersion = "0.1.4"
         gdxVersion = "1.12.1"
-        jsrVersion = "3.0.2"
+        jspecifyVersion = "0.3.0"
         
         // Test dependencies
         junitVersion = "5.6.0"
@@ -38,7 +38,7 @@ project(":core") {
 	apply plugin: "java-library"
 
     dependencies {
-    	api "com.google.code.findbugs:jsr305:$jsrVersion"
+    	api "org.jspecify:jspecify:$jspecifyVersion"
     	
     	testImplementation "org.junit.platform:junit-platform-launcher:1.2.0" // needed for a bug in older eclipse versions
     	testImplementation "org.junit.jupiter:junit-jupiter-engine:$junitVersion"

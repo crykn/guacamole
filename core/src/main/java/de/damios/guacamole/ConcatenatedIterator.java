@@ -20,17 +20,19 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.jspecify.annotations.Nullable;
+
 /**
  * This class aggregates multiple iterators.
  *
  * @param <E>
  * @author damios
  */
-public final class ConcatenatedIterator<E> implements Iterator<E> {
+public final class ConcatenatedIterator<@Nullable E> implements Iterator<E> {
 
 	private final LinkedList<Iterator<E>> iterators;
-	private Iterator<E> currentIterator = null;
-	private Iterator<E> lastItemFrom = null;
+	private @Nullable Iterator<E> currentIterator = null;
+	private @Nullable Iterator<E> lastItemFrom = null;
 
 	public ConcatenatedIterator(List<Iterator<E>> iterators) {
 		this.iterators = new LinkedList<>(iterators);
@@ -43,7 +45,7 @@ public final class ConcatenatedIterator<E> implements Iterator<E> {
 	}
 
 	@Override
-	public E next() {
+	public @Nullable E next() {
 		if (currentIterator != null && currentIterator.hasNext()) {
 			lastItemFrom = currentIterator;
 			return currentIterator.next();

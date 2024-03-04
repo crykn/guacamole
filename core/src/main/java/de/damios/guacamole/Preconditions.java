@@ -17,7 +17,7 @@ package de.damios.guacamole;
 
 import java.util.Collection;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Static methods to help check whether some argument, state or object is valid.
@@ -98,7 +98,7 @@ public final class Preconditions {
 	 * @throws NullPointerException
 	 *             if {@code obj} is {@code null}
 	 */
-	public static void checkNotNull(Object obj) {
+	public static void checkNotNull(@Nullable Object obj) {
 		if (obj == null) {
 			throw new NullPointerException();
 		}
@@ -113,7 +113,8 @@ public final class Preconditions {
 	 * @throws NullPointerException
 	 *             if {@code obj} is {@code null}
 	 */
-	public static void checkNotNull(Object obj, @Nullable String msg) {
+	public static void checkNotNull(@Nullable Object obj,
+			@Nullable String msg) {
 		if (obj == null) {
 			throw new NullPointerException(msg);
 		}

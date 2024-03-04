@@ -23,7 +23,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.function.Predicate;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import com.badlogic.gdx.utils.reflect.Annotation;
 import com.badlogic.gdx.utils.reflect.ClassReflection;
@@ -68,7 +68,6 @@ public class ReflectionUtils {
 	 * @param clazz
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	public static @Nullable <T> T newInstanceOrNull(Class<T> clazz) {
 		try {
 			return (T) ClassReflection.newInstance(clazz);
@@ -113,7 +112,6 @@ public class ReflectionUtils {
 	 *            an array of objects that should be handed to the constructor
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	public static @Nullable <T> T newInstanceWithParamsOrNull(String className,
 			Class<T> clazz, Class[] parameterTypes, Object[] args) {
 		try {

@@ -15,7 +15,7 @@
 
 package de.damios.guacamole;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * A simple callback that differentiates between successful and failed
