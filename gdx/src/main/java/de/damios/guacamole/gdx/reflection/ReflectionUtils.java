@@ -173,9 +173,7 @@ public class ReflectionUtils {
 		return Collections.unmodifiableSet(allSuperTypes);
 	}
 
-	// Can't mark this with @Nullable because of GWT ("Annotation types that do
-	// not specify explicit target element types cannot be applied here")
-	public static <A extends java.lang.annotation.Annotation> A getAnnotationObject(
+	public static <A extends java.lang.annotation.Annotation> @Nullable A getAnnotationObject(
 			Field field, Class<A> clazz) {
 		Annotation annotation = field.getDeclaredAnnotation(clazz);
 		if (annotation == null)
