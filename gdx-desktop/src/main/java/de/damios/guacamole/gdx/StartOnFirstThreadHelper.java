@@ -210,7 +210,7 @@ public class StartOnFirstThreadHelper {
 	 * @see #executeOnValidJVM(Runnable)
 	 */
 	public static void executeOnValidJVM(Runnable mainMethodCode) {
-		executeOnValidJVM(mainMethodCode);
+		executeOnValidJVM(mainMethodCode, (String[]) null);
 	}
 
 }
