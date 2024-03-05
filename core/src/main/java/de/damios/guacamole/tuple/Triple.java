@@ -24,9 +24,12 @@ import org.jspecify.annotations.Nullable;
  * 
  * @author damios
  */
-public class Triple<@Nullable X, @Nullable Y, @Nullable Z> extends Pair<X, Y> {
+public class Triple</* @Nullable */ X, /* @Nullable */ Y, /* @Nullable */ Z>
+		extends Pair<X, Y> {
+	// On GWT, @Nullable can't be used in type parameters yet; see
+	// https://github.com/jspecify/jspecify/issues/184
 
-	public final Z z;
+	public final @Nullable Z z;
 
 	public Triple(X x, Y y, Z z) {
 		super(x, y);

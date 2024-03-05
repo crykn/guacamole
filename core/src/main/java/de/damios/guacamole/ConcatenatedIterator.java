@@ -28,7 +28,10 @@ import org.jspecify.annotations.Nullable;
  * @param <E>
  * @author damios
  */
-public final class ConcatenatedIterator<@Nullable E> implements Iterator<E> {
+public final class ConcatenatedIterator</* @Nullable */ E>
+		implements Iterator<E> {
+	// On GWT, @Nullable can't be used in type parameters yet; see
+	// https://github.com/jspecify/jspecify/issues/184
 
 	private final LinkedList<Iterator<E>> iterators;
 	private @Nullable Iterator<E> currentIterator = null;

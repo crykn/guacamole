@@ -24,10 +24,12 @@ import org.jspecify.annotations.Nullable;
  * 
  * @author damios
  */
-public class Pair<@Nullable X, @Nullable Y> {
+public class Pair</* @Nullable */ X, /* @Nullable */ Y> {
+	// On GWT, @Nullable can't be used in type parameters yet; see
+	// https://github.com/jspecify/jspecify/issues/184
 
-	public final X x;
-	public final Y y;
+	public final @Nullable X x;
+	public final @Nullable Y y;
 
 	public Pair(X x, Y y) {
 		this.x = x;
