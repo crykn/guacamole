@@ -106,7 +106,9 @@ public class ShaderCompatibilityHelper {
 		// Since gl30 != null, we can be sure that we aren't running on ANGLE
 		// TODO: use PlatformUtils.isMac (see
 		// https://github.com/libgdx/libgdx/pull/5960)
-		return Gdx.gl30 != null && UIUtils.isMac;
+		return (Gdx.app.getType() == ApplicationType.Desktop
+				|| Gdx.app.getType() == ApplicationType.HeadlessDesktop)
+				&& Gdx.gl30 != null && UIUtils.isMac;
 	}
 
 	public static String getDefaultShaderVersionStatement() {
