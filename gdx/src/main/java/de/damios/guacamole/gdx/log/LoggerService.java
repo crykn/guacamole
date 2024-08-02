@@ -187,6 +187,9 @@ public class LoggerService {
 	 * 
 	 * <pre>
 	* [ERROR] [c.b.g.m.MyGdxGame]: something went wrong!
+	 * </pre>
+	 * 
+	 * <pre>
 	* [ERROR] [c.b.g.m.MyGdxGame       ]: something went wrong!
 	* [ERROR] [c.b.g.m.i.MyInputProcess]: something went wrong!
 	 * </pre>
