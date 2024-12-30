@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.InputStreamReader;
 import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.jspecify.annotations.Nullable;
 import org.lwjgl.system.macosx.LibC;
@@ -116,8 +117,16 @@ public class StartOnFirstThreadHelper {
 		command.add(javaExecPath);
 		command.add("-XstartOnFirstThread");
 		command.add("-D" + JVM_RESTARTED_ARG + "=true");
-		command.addAll(
-				ManagementFactory.getRuntimeMXBean().getInputArguments());
+		List<String> oldArgs = ManagementFactory.getRuntimeMXBean()
+				.getInputArguments();
+		for (String str : oldArgs) {
+			if (str.contains("jdwp") || str.contains("debug")) {
+				System.err.println(
+						"It seems like you are trying to use a debugger. For this to work, you need to set the -XstartOnFirstThread argument manually!");
+				return false;
+			}
+		}
+		command.addAll(oldArgs);
 		command.add("-cp");
 		command.add(System.getProperty("java.class.path"));
 		String mainClass = System.getenv("JAVA_MAIN_CLASS_" + pid);
@@ -167,7 +176,7 @@ public class StartOnFirstThreadHelper {
 	/**
 	 * Starts a new JVM if required; otherwise executes the main method code
 	 * given as Runnable. When used with lambdas, this is allows for less
-	 * verbose code than {@link #startNewJvmIfRequired()}:
+	 * verbose code than {@link #startNewJvmIfRequired(boolean, String...)}:
 	 * 
 	 * <pre>
 	 * public static void main(String... args) {
@@ -195,7 +204,7 @@ public class StartOnFirstThreadHelper {
 	/**
 	 * Starts a new JVM if required; otherwise executes the main method code
 	 * given as Runnable. When used with lambdas, this is allows for less
-	 * verbose code than {@link #startNewJvmIfRequired()}:
+	 * verbose code than {@link #startNewJvmIfRequired(boolean, String...)}:
 	 * 
 	 * <pre>
 	 * public static void main(String... args) {
@@ -206,7 +215,7 @@ public class StartOnFirstThreadHelper {
 	 * </pre>
 	 * 
 	 * @param mainMethodCode
-	 * @see #startNewJvmIfRequired(boolean)
+	 * @see #startNewJvmIfRequired(boolean, String...)
 	 * @see #executeOnValidJVM(Runnable)
 	 */
 	public static void executeOnValidJVM(Runnable mainMethodCode) {
