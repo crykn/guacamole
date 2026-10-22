@@ -15,17 +15,15 @@
 
 package de.damios.guacamole.gdx;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.InputStreamReader;
 import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.jspecify.annotations.Nullable;
+import org.lwjgl.system.Configuration;
+import org.lwjgl.system.Platform;
 import org.lwjgl.system.macosx.LibC;
-
-import com.badlogic.gdx.scenes.scene2d.utils.UIUtils;
 
 /**
  * Adds some utilities to ensure that the JVM was started with the
@@ -47,9 +45,9 @@ public class StartOnFirstThreadHelper {
 	}
 
 	/**
-	 * Starts a new JVM if the application was started on macOS without the
-	 * {@code -XstartOnFirstThread} argument. Returns whether a new JVM was
-	 * started and thus no code should be executed.
+	 * Starts a new JVM with the {@code -XstartOnFirstThread} argument if the
+	 * application does not run on the required thread on macOS. Returns whether
+	 * a new JVM was started and thus no code should be executed.
 	 * <p>
 	 * <u>Usage:</u>
 	 * 
@@ -63,9 +61,9 @@ public class StartOnFirstThreadHelper {
 	 * </pre>
 	 * 
 	 * @param redirectOutput
-	 *            whether the output of the new JVM should be rerouted to the
-	 *            new JVM, so it can be accessed in the same place; keeps the
-	 *            old JVM running if enabled
+	 *            whether input and output of the new JVM should be take from /
+	 *            rerouted to the old JVM, so it can be accessed in the same
+	 *            place; keeps the old JVM running if enabled
 	 * @param args
 	 *            the start arguments passed to the main method of the Java
 	 *            application
@@ -76,9 +74,9 @@ public class StartOnFirstThreadHelper {
 	 * @see #executeOnValidJVM(Runnable, String...)
 	 */
 	public static boolean startNewJvmIfRequired(boolean redirectOutput,
-			@Nullable String... args) {
+			String @Nullable... args) {
 		/* The -XstartOnFirstThread argument is only needed on macOS */
-		if (!UIUtils.isMac) {
+		if (Platform.get() != Platform.MACOSX) {
 			return false;
 		}
 
@@ -88,7 +86,15 @@ public class StartOnFirstThreadHelper {
 			return false;
 		}
 
-		/* Check whether -XstartOnFirstThread is enabled */
+		/*
+		 * There is no need for -XstartOnFirstThread when using the glfw_async
+		 * library
+		 */
+		if ("glfw_async".equals(Configuration.GLFW_LIBRARY_NAME.get())) {
+			return false;
+		}
+
+		/* Check whether -XstartOnFirstThread is already enabled */
 		long pid = LibC.getpid();
 		if ("1".equals(System.getenv("JAVA_STARTED_ON_FIRST_THREAD_" + pid))) {
 			return false;
@@ -101,12 +107,23 @@ public class StartOnFirstThreadHelper {
 			return false;
 		}
 
+		/* Check whether a debugger is attached; it can't follow the new JVM */
+		List<String> oldArgs = ManagementFactory.getRuntimeMXBean()
+				.getInputArguments();
+		for (String str : oldArgs) {
+			if (str.startsWith("-agentlib:jdwp") || str.startsWith("-Xrunjdwp")
+					|| str.equals("-Xdebug")) {
+				System.err.println(
+						"It seems like you are trying to use a debugger. For this to work, you need to set the -XstartOnFirstThread argument manually!");
+				return false;
+			}
+		}
+
 		/* Restart the JVM with -XstartOnFirstThread */
 		ArrayList<String> command = new ArrayList<>();
-		String separator = System.getProperty("file.separator");
 		// TODO Java 9: ProcessHandle.current().info().command();
-		String javaExecPath = System.getProperty("java.home") + separator
-				+ "bin" + separator + "java";
+		String javaExecPath = System.getProperty("java.home") + File.separator
+				+ "bin" + File.separator + "java";
 		if (!(new File(javaExecPath)).exists()) {
 			// The java installation needed for restarting the JVM could not be
 			// determined
@@ -117,15 +134,6 @@ public class StartOnFirstThreadHelper {
 		command.add(javaExecPath);
 		command.add("-XstartOnFirstThread");
 		command.add("-D" + JVM_RESTARTED_ARG + "=true");
-		List<String> oldArgs = ManagementFactory.getRuntimeMXBean()
-				.getInputArguments();
-		for (String str : oldArgs) {
-			if (str.contains("jdwp") || str.contains("debug")) {
-				System.err.println(
-						"It seems like you are trying to use a debugger. For this to work, you need to set the -XstartOnFirstThread argument manually!");
-				return false;
-			}
-		}
 		command.addAll(oldArgs);
 		command.add("-cp");
 		command.add(System.getProperty("java.class.path"));
@@ -143,26 +151,17 @@ public class StartOnFirstThreadHelper {
 		}
 		command.add(mainClass);
 		if (args != null) {
-			for (int i = 0; i < args.length; i++) {
-				command.add(args[i]);
+			for (String arg : args) {
+				command.add(arg == null ? "" : arg);
 			}
 		}
 
 		try {
 			if (!redirectOutput) {
-				ProcessBuilder processBuilder = new ProcessBuilder(command);
-				processBuilder.start();
+				(new ProcessBuilder(command)).start();
 			} else {
-				Process process = (new ProcessBuilder(command))
-						.redirectErrorStream(true).start();
-				BufferedReader processOutput = new BufferedReader(
-						new InputStreamReader(process.getInputStream()));
-				String line;
-
-				while ((line = processOutput.readLine()) != null) {
-					System.out.println(line);
-				}
-
+				Process process = (new ProcessBuilder(command)).inheritIO()
+						.start();
 				process.waitFor();
 			}
 		} catch (Exception e) {
@@ -175,12 +174,12 @@ public class StartOnFirstThreadHelper {
 
 	/**
 	 * Starts a new JVM if required; otherwise executes the main method code
-	 * given as Runnable. When used with lambdas, this is allows for less
-	 * verbose code than {@link #startNewJvmIfRequired(boolean, String...)}:
+	 * given as Runnable. When used with lambdas, this allows for less verbose
+	 * code than {@link #startNewJvmIfRequired(boolean, String...)}:
 	 * 
 	 * <pre>
 	 * public static void main(String... args) {
-	 * 	StartOnFirstThreadHelper.executeIfJVMValid(() -> {
+	 * 	StartOnFirstThreadHelper.executeOnValidJVM(() -> {
 	 * 		// the actual main method code
 	 * 	}, args);
 	 * }
@@ -194,7 +193,7 @@ public class StartOnFirstThreadHelper {
 	 * @see #executeOnValidJVM(Runnable)
 	 */
 	public static void executeOnValidJVM(Runnable mainMethodCode,
-			String... args) {
+			String @Nullable... args) {
 		if (startNewJvmIfRequired(true, args)) {
 			return;
 		}
@@ -203,12 +202,12 @@ public class StartOnFirstThreadHelper {
 
 	/**
 	 * Starts a new JVM if required; otherwise executes the main method code
-	 * given as Runnable. When used with lambdas, this is allows for less
-	 * verbose code than {@link #startNewJvmIfRequired(boolean, String...)}:
+	 * given as Runnable. When used with lambdas, this allows for less verbose
+	 * code than {@link #startNewJvmIfRequired(boolean, String...)}:
 	 * 
 	 * <pre>
 	 * public static void main(String... args) {
-	 * 	StartOnFirstThreadHelper.executeIfJVMValid(() -> {
+	 * 	StartOnFirstThreadHelper.executeOnValidJVM(() -> {
 	 * 		// the actual main method code
 	 * 	});
 	 * }
@@ -216,7 +215,7 @@ public class StartOnFirstThreadHelper {
 	 * 
 	 * @param mainMethodCode
 	 * @see #startNewJvmIfRequired(boolean, String...)
-	 * @see #executeOnValidJVM(Runnable)
+	 * @see #executeOnValidJVM(Runnable, String...)
 	 */
 	public static void executeOnValidJVM(Runnable mainMethodCode) {
 		executeOnValidJVM(mainMethodCode, (String[]) null);
